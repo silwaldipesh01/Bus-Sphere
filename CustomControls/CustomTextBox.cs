@@ -8,13 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
+using System.Security.Policy;
 
 namespace Bus_Sphere.CustomControls
 {
     [DefaultEvent("_TextChanged")]
     public partial class CustomTextBox : UserControl
     {
-
+        #region -> Fields
         private Color borderColor = Color.MediumSlateBlue;
         private int borderSize = 2;
         private bool underlinedStyle = false;
@@ -27,13 +28,25 @@ namespace Bus_Sphere.CustomControls
         private bool isPlaceholder = false;
         private bool isPasswordChar = false;
 
+        //Events
+        public event EventHandler _TextChanged;
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            if (_TextChanged != null)
+                _TextChanged.Invoke(sender, e);
+        }
+
+
+
         public CustomTextBox()
         {
             InitializeComponent();
         }
-        
+        #endregion
+        //Events
+    
 
-        public event EventHandler _TextChanged;
+        #region -> Properties
 
         [Category("Custom Texts")]
         public Color BorderColor
@@ -51,8 +64,11 @@ namespace Bus_Sphere.CustomControls
             get { return borderSize; }
             set
             {
-                borderSize = value;
-                this.Invalidate();
+                if (value >= 1)
+                {
+                    borderSize = value;
+                    this.Invalidate();
+                }
             }
         }
         [Category("Custom Texts")]
@@ -72,7 +88,8 @@ namespace Bus_Sphere.CustomControls
             set 
             {
                 isPasswordChar = value;
-                textBox1.UseSystemPasswordChar = value;
+                if (!isPlaceholder)
+                    textBox1.UseSystemPasswordChar = value;
             }
         }
         [Category("Custom Texts")]
@@ -154,11 +171,31 @@ namespace Bus_Sphere.CustomControls
             }
         }
 
-        public Color PlaceholderColor { get => placeholderColor; set => placeholderColor = value; }
-        public string PlaceholderText1 { get => placeholderText; set => placeholderText = value; }
+        public Color PlaceholderColor
+        {
+            get { return placeholderColor; }
+            set
+            {
+                placeholderColor = value;
+                if (isPlaceholder)
+                    textBox1.ForeColor = value;
+            }
+        }
 
+        #endregion
 
-
+        #region -> Overridden methods
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            if (this.DesignMode)
+                UpdateControlHeight();
+        }
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            UpdateControlHeight();
+        }
         //override methodss
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -217,6 +254,8 @@ namespace Bus_Sphere.CustomControls
                 }
             }
         }
+
+        #region -> Private methods
         private void SetPlaceholder()
         {
             if (string.IsNullOrWhiteSpace(textBox1.Text) && placeholderText != "")
@@ -239,6 +278,19 @@ namespace Bus_Sphere.CustomControls
                     textBox1.UseSystemPasswordChar = true;
             }
         }
+        private GraphicsPath GetFigurePath(Rectangle rect, int radius)
+        {
+            GraphicsPath path = new GraphicsPath();
+            float curveSize = radius * 2F;
+
+            path.StartFigure();
+            path.AddArc(rect.X, rect.Y, curveSize, curveSize, 180, 90);
+            path.AddArc(rect.Right - curveSize, rect.Y, curveSize, curveSize, 270, 90);
+            path.AddArc(rect.Right - curveSize, rect.Bottom - curveSize, curveSize, curveSize, 0, 90);
+            path.AddArc(rect.X, rect.Bottom - curveSize, curveSize, curveSize, 90, 90);
+            path.CloseFigure();
+            return path;
+        }
         private void SetTextBoxRoundedRegion()
         {
             GraphicsPath pathTxt;
@@ -254,32 +306,6 @@ namespace Bus_Sphere.CustomControls
             }
             pathTxt.Dispose();
         }
-        private GraphicsPath GetFigurePath(Rectangle rect, int radius)
-        {
-            GraphicsPath path = new GraphicsPath();
-            float curveSize = radius * 2F;
-
-            path.StartFigure();
-            path.AddArc(rect.X, rect.Y, curveSize, curveSize, 180, 90);
-            path.AddArc(rect.Right - curveSize, rect.Y, curveSize, curveSize, 270, 90);
-            path.AddArc(rect.Right - curveSize, rect.Bottom - curveSize, curveSize, curveSize, 0, 90);
-            path.AddArc(rect.X, rect.Bottom - curveSize, curveSize, curveSize, 90, 90);
-            path.CloseFigure();
-            return path;
-        }
-
-
-        protected override void OnResize(EventArgs e)
-        {
-            base.OnResize(e);
-            if (this.DesignMode)
-                UpdateControlHeight();
-        }
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-            UpdateControlHeight();
-        }
 
         private void UpdateControlHeight()
         {
@@ -293,11 +319,22 @@ namespace Bus_Sphere.CustomControls
                 this.Height = textBox1.Height + this.Padding.Top + this.Padding.Bottom;
             }
         }
+        #endregion
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
+
+
+        private void textBox1_Enter(object sender, EventArgs e)
         {
-            if (_TextChanged != null)
-                _TextChanged.Invoke(sender, e);
+            isFocused = true;
+            this.Invalidate();
+            RemovePlaceholder();
+        }
+
+        private void textBox1_Leave(object sender, EventArgs e)
+        {
+            isFocused = false;
+            this.Invalidate();
+            SetPlaceholder();
         }
 
 
@@ -307,39 +344,24 @@ namespace Bus_Sphere.CustomControls
             this.OnMouseEnter(e);
             RemovePlaceholder();
         }
-
         private void textBox1_MouseLeave(object sender, EventArgs e)
         {
             isFocused = false;
             this.OnMouseLeave(e);
             SetPlaceholder();
         }
-
+       
+       
+        private void textBox1_Click(object sender, EventArgs e)
+        {
+            this.OnClick(e);
+        }
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
             this.OnKeyPress(e);
         }
 
-        private void textBox1_Enter(object sender, EventArgs e)
-        {
-            isFocused = true;
-            this.Invalidate();
-        }
-
-        private void textBox1_Leave(object sender, EventArgs e)
-        {
-            //  isFocused = false;
-            this.Invalidate();
-        }
-
-        private void textBox1_Click(object sender, EventArgs e)
-        {
-            this.OnClick(e);
-        }
-       
-
-
-
         ///::::+
+        #endregion
     }
 }

@@ -28,124 +28,160 @@
         /// </summary>
         private void InitializeComponent()
         {
-            customToggleButton1 = new CustomControls.CustomToggleButton();
-            customDatePicker1 = new CustomControls.CustomDatePicker();
-            customBtn1 = new CustomControls.CustomBtn();
-            customTextBox1 = new CustomControls.CustomTextBox();
-            customTextBox2 = new CustomControls.CustomTextBox();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            pictureBox1 = new PictureBox();
+            LoginBtn = new CustomControls.CustomBtn();
+            UsernameTxtBox = new TextBox();
+            PasswordTxtBox = new TextBox();
+            label1 = new Label();
+            label2 = new Label();
+            ValidUserTxt = new Label();
+            SignUpBtn = new CustomControls.CustomBtn();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
-            // customToggleButton1
+            // pictureBox1
             // 
-            customToggleButton1.AutoSize = true;
-            customToggleButton1.Location = new Point(105, 44);
-            customToggleButton1.MinimumSize = new Size(45, 22);
-            customToggleButton1.Name = "customToggleButton1";
-            customToggleButton1.OffBackColor = Color.Gray;
-            customToggleButton1.OffToggleColor = Color.Gainsboro;
-            customToggleButton1.OnBackColor = Color.MediumSlateBlue;
-            customToggleButton1.OnToggleColor = Color.WhiteSmoke;
-            customToggleButton1.Size = new Size(45, 22);
-            customToggleButton1.TabIndex = 0;
-            customToggleButton1.UseVisualStyleBackColor = true;
+            pictureBox1.BackColor = Color.Transparent;
+            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
+            pictureBox1.Location = new Point(198, 12);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(979, 190);
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox1.TabIndex = 6;
+            pictureBox1.TabStop = false;
             // 
-            // customDatePicker1
+            // LoginBtn
             // 
-            customDatePicker1.BorderColor = Color.PaleVioletRed;
-            customDatePicker1.BorderSize = 0;
-            customDatePicker1.Font = new Font("Segoe UI", 9.5F);
-            customDatePicker1.Location = new Point(93, 86);
-            customDatePicker1.MinimumSize = new Size(0, 35);
-            customDatePicker1.Name = "customDatePicker1";
-            customDatePicker1.Size = new Size(272, 35);
-            customDatePicker1.SkinColor = Color.MediumSlateBlue;
-            customDatePicker1.TabIndex = 1;
-            customDatePicker1.TextColor = Color.White;
-            customDatePicker1.ValueChanged += customDatePicker1_ValueChanged;
+            LoginBtn.Anchor = AnchorStyles.None;
+            LoginBtn.BackColor = Color.FromArgb(72, 131, 181);
+            LoginBtn.BackgroundColor = Color.FromArgb(72, 131, 181);
+            LoginBtn.BorderColor = Color.Black;
+            LoginBtn.BorderRadius = 10;
+            LoginBtn.BorderSize = 0;
+            LoginBtn.FlatAppearance.BorderSize = 0;
+            LoginBtn.FlatStyle = FlatStyle.Flat;
+            LoginBtn.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            LoginBtn.ForeColor = Color.Transparent;
+            LoginBtn.Location = new Point(505, 470);
+            LoginBtn.Name = "LoginBtn";
+            LoginBtn.Size = new Size(284, 40);
+            LoginBtn.TabIndex = 8;
+            LoginBtn.Text = "Login";
+            LoginBtn.TextColor = Color.Transparent;
+            LoginBtn.UseVisualStyleBackColor = false;
+            LoginBtn.Click += LoginBtn_Click;
             // 
-            // customBtn1
+            // UsernameTxtBox
             // 
-            customBtn1.BackColor = Color.MediumSlateBlue;
-            customBtn1.BackgroundColor = Color.MediumSlateBlue;
-            customBtn1.BorderColor = Color.PaleVioletRed;
-            customBtn1.BorderRadius = 0;
-            customBtn1.BorderSize = 0;
-            customBtn1.FlatAppearance.BorderSize = 0;
-            customBtn1.FlatStyle = FlatStyle.Flat;
-            customBtn1.ForeColor = Color.White;
-            customBtn1.Location = new Point(93, 127);
-            customBtn1.Name = "customBtn1";
-            customBtn1.Size = new Size(272, 40);
-            customBtn1.TabIndex = 2;
-            customBtn1.Text = "customBtn1";
-            customBtn1.TextColor = Color.White;
-            customBtn1.UseVisualStyleBackColor = false;
+            UsernameTxtBox.Location = new Point(610, 332);
+            UsernameTxtBox.Margin = new Padding(2);
+            UsernameTxtBox.Name = "UsernameTxtBox";
+            UsernameTxtBox.Size = new Size(179, 23);
+            UsernameTxtBox.TabIndex = 9;
             // 
-            // customTextBox1
+            // PasswordTxtBox
             // 
-            customTextBox1.BackColor = SystemColors.Window;
-            customTextBox1.BorderColor = Color.MediumSlateBlue;
-            customTextBox1.BorderRadius = 0;
-            customTextBox1.BorderSize = 2;
-            customTextBox1.Font = new Font("Segoe UI", 9.5F);
-            customTextBox1.Location = new Point(93, 174);
-            customTextBox1.Margin = new Padding(4);
-            customTextBox1.Multiline = false;
-            customTextBox1.Name = "customTextBox1";
-            customTextBox1.Padding = new Padding(7);
-            customTextBox1.PasswordChar = false;
-            customTextBox1.PlaceholderColor = Color.DarkGray;
-            customTextBox1.PlaceholderText = "";
-            customTextBox1.PlaceholderText1 = "";
-            customTextBox1.Size = new Size(260, 32);
-            customTextBox1.TabIndex = 3;
-            customTextBox1.Texts = "";
-            customTextBox1.UnderlinedStyle = true;
+            PasswordTxtBox.ForeColor = SystemColors.Desktop;
+            PasswordTxtBox.Location = new Point(610, 399);
+            PasswordTxtBox.Name = "PasswordTxtBox";
+            PasswordTxtBox.PasswordChar = '*';
+            PasswordTxtBox.Size = new Size(179, 23);
+            PasswordTxtBox.TabIndex = 10;
+            PasswordTxtBox.TextChanged += textBox2_TextChanged;
             // 
-            // customTextBox2
+            // label1
             // 
-            customTextBox2.BackColor = SystemColors.Window;
-            customTextBox2.BorderColor = Color.MediumSlateBlue;
-            customTextBox2.BorderRadius = 5;
-            customTextBox2.BorderSize = 2;
-            customTextBox2.Font = new Font("Segoe UI", 9.5F);
-            customTextBox2.Location = new Point(93, 214);
-            customTextBox2.Margin = new Padding(4);
-            customTextBox2.Multiline = false;
-            customTextBox2.Name = "customTextBox2";
-            customTextBox2.Padding = new Padding(7);
-            customTextBox2.PasswordChar = false;
-            customTextBox2.PlaceholderColor = Color.DarkGray;
-            customTextBox2.PlaceholderText = "";
-            customTextBox2.PlaceholderText1 = "";
-            customTextBox2.Size = new Size(250, 32);
-            customTextBox2.TabIndex = 4;
-            customTextBox2.Texts = "";
-            customTextBox2.UnderlinedStyle = true;
+            label1.AutoSize = true;
+            label1.BackColor = Color.Transparent;
+            label1.Font = new Font("Segoe UI", 12F);
+            label1.Location = new Point(505, 399);
+            label1.Name = "label1";
+            label1.Size = new Size(76, 21);
+            label1.TabIndex = 11;
+            label1.Text = "Password";
+            label1.Click += label1_Click;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.BackColor = Color.Transparent;
+            label2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label2.Location = new Point(505, 334);
+            label2.Name = "label2";
+            label2.Size = new Size(81, 21);
+            label2.TabIndex = 12;
+            label2.Text = "Username";
+            // 
+            // ValidUserTxt
+            // 
+            ValidUserTxt.AutoSize = true;
+            ValidUserTxt.BackColor = Color.Transparent;
+            ValidUserTxt.Font = new Font("Arial", 9.75F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            ValidUserTxt.ForeColor = Color.Red;
+            ValidUserTxt.Location = new Point(505, 441);
+            ValidUserTxt.Name = "ValidUserTxt";
+            ValidUserTxt.Size = new Size(90, 16);
+            ValidUserTxt.TabIndex = 13;
+            ValidUserTxt.Text = "Authentication";
+            ValidUserTxt.Click += ValidUserTxt_Click;
+            // 
+            // SignUpBtn
+            // 
+            SignUpBtn.Anchor = AnchorStyles.None;
+            SignUpBtn.BackColor = Color.FromArgb(72, 131, 181);
+            SignUpBtn.BackgroundColor = Color.FromArgb(72, 131, 181);
+            SignUpBtn.BorderColor = Color.Black;
+            SignUpBtn.BorderRadius = 10;
+            SignUpBtn.BorderSize = 0;
+            SignUpBtn.FlatAppearance.BorderSize = 0;
+            SignUpBtn.FlatStyle = FlatStyle.Flat;
+            SignUpBtn.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            SignUpBtn.ForeColor = Color.Transparent;
+            SignUpBtn.Location = new Point(1170, 565);
+            SignUpBtn.Name = "SignUpBtn";
+            SignUpBtn.Size = new Size(122, 40);
+            SignUpBtn.TabIndex = 14;
+            SignUpBtn.Text = "Sign Up!";
+            SignUpBtn.TextColor = Color.Transparent;
+            SignUpBtn.UseVisualStyleBackColor = false;
+            SignUpBtn.Click += SignUpBtn_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(984, 570);
-            Controls.Add(customTextBox2);
-            Controls.Add(customTextBox1);
-            Controls.Add(customBtn1);
-            Controls.Add(customDatePicker1);
-            Controls.Add(customToggleButton1);
+            BackColor = Color.WhiteSmoke;
+            BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
+            BackgroundImageLayout = ImageLayout.Stretch;
+            CausesValidation = false;
+            ClientSize = new Size(1324, 626);
+            Controls.Add(SignUpBtn);
+            Controls.Add(ValidUserTxt);
+            Controls.Add(label2);
+            Controls.Add(label1);
+            Controls.Add(PasswordTxtBox);
+            Controls.Add(UsernameTxtBox);
+            Controls.Add(LoginBtn);
+            Controls.Add(pictureBox1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Form1";
-            Text = "Form1";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Login";
             Load += Form1_Load;
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-
-        private CustomControls.CustomToggleButton customToggleButton1;
-        private CustomControls.CustomDatePicker customDatePicker1;
-        private CustomControls.CustomBtn customBtn1;
-        private CustomControls.CustomTextBox customTextBox1;
-        private CustomControls.CustomTextBox customTextBox2;
+        private PictureBox pictureBox1;
+        private CustomControls.CustomBtn LoginBtn;
+        private TextBox UsernameTxtBox;
+        private TextBox PasswordTxtBox;
+        private Label label1;
+        private Label label2;
+        private Label ValidUserTxt;
+        private CustomControls.CustomBtn SignUpBtn;
     }
 }
