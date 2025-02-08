@@ -61,7 +61,7 @@ namespace Bus_Sphere
                         if (PasswordHasher.ValidatePassword(PasswordTxtBox.Text, $"{reader["passwordhash"]}"))
                         {
                             this.Hide();
-                            new BusSphere().Show();
+                           // new BusSphere().Show();
                         }
                         else
                         {
@@ -120,6 +120,21 @@ namespace Bus_Sphere
         private void label1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void ForgotPassLbl_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Please contact the admin For password reset");
+        }
+
+        private void ForgotPassLbl_MouseEnter(object sender, EventArgs e)
+        {
+            ForgotPassLbl.ForeColor = Color.Red;
+        }
+
+        private void ForgotPassLbl_MouseLeave(object sender, EventArgs e)
+        {
+            ForgotPassLbl.ForeColor = Color.Black;
         }
     }
 }

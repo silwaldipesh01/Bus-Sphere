@@ -36,6 +36,8 @@
             label1 = new Label();
             label2 = new Label();
             ValidUserTxt = new Label();
+            ForgotPassLbl = new Label();
+            mySqlCommand1 = new MySql.Data.MySqlClient.MySqlCommand();
             SignUpBtn = new CustomControls.CustomBtn();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
@@ -44,7 +46,7 @@
             // 
             pictureBox1.BackColor = Color.Transparent;
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(198, 12);
+            pictureBox1.Location = new Point(195, 12);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(979, 190);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -63,7 +65,7 @@
             LoginBtn.FlatStyle = FlatStyle.Flat;
             LoginBtn.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             LoginBtn.ForeColor = Color.Transparent;
-            LoginBtn.Location = new Point(505, 470);
+            LoginBtn.Location = new Point(505, 460);
             LoginBtn.Name = "LoginBtn";
             LoginBtn.Size = new Size(284, 40);
             LoginBtn.TabIndex = 8;
@@ -126,6 +128,28 @@
             ValidUserTxt.Text = "Authentication";
             ValidUserTxt.Click += ValidUserTxt_Click;
             // 
+            // ForgotPassLbl
+            // 
+            ForgotPassLbl.AutoSize = true;
+            ForgotPassLbl.BackColor = Color.Transparent;
+            ForgotPassLbl.Font = new Font("Arial", 9.75F, FontStyle.Italic | FontStyle.Underline, GraphicsUnit.Point, 0);
+            ForgotPassLbl.ForeColor = Color.Black;
+            ForgotPassLbl.Location = new Point(505, 515);
+            ForgotPassLbl.Name = "ForgotPassLbl";
+            ForgotPassLbl.Size = new Size(115, 16);
+            ForgotPassLbl.TabIndex = 15;
+            ForgotPassLbl.Text = "Forgot Password ?";
+            ForgotPassLbl.Click += ForgotPassLbl_Click;
+            ForgotPassLbl.MouseEnter += ForgotPassLbl_MouseEnter;
+            ForgotPassLbl.MouseLeave += ForgotPassLbl_MouseLeave;
+            // 
+            // mySqlCommand1
+            // 
+            mySqlCommand1.CacheAge = 0;
+            mySqlCommand1.Connection = null;
+            mySqlCommand1.EnableCaching = false;
+            mySqlCommand1.Transaction = null;
+            // 
             // SignUpBtn
             // 
             SignUpBtn.Anchor = AnchorStyles.None;
@@ -156,6 +180,7 @@
             BackgroundImageLayout = ImageLayout.Stretch;
             CausesValidation = false;
             ClientSize = new Size(1324, 626);
+            Controls.Add(ForgotPassLbl);
             Controls.Add(SignUpBtn);
             Controls.Add(ValidUserTxt);
             Controls.Add(label2);
@@ -182,6 +207,8 @@
         private Label label1;
         private Label label2;
         private Label ValidUserTxt;
+        private Label ForgotPassLbl;
+        private MySql.Data.MySqlClient.MySqlCommand mySqlCommand1;
         private CustomControls.CustomBtn SignUpBtn;
     }
 }

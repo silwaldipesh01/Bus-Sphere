@@ -1,3 +1,5 @@
+using Bus_Sphere.packages;
+
 namespace Bus_Sphere
 {
     internal static class Program
@@ -8,10 +10,14 @@ namespace Bus_Sphere
         [STAThread]
         static void Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
+            //To customize application configuration such as set high DPI settings or default font,
+            //see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new Form1());
+            //Application.Run(new Form1());
+            //Application.Run(new LoadBuses());
+            Application.Run(new MainPage());
+
+
         }
     }
 }
