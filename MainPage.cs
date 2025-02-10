@@ -25,8 +25,10 @@ namespace Bus_Sphere.packages
             //LoadUserControl(loadBusesFormControl);
             //SeatSelection seatSelection = new SeatSelection();
             //LoadUserControl(seatSelection);
-            BusList busList = new BusList();
-            LoadUserControl(busList);
+            //BusList busList = new BusList();
+            //LoadUserControl(busList);
+            SeatLayout seatLayout = new SeatLayout("1");
+            LoadUserControl(seatLayout);
         }
         //    public void loadform(object Form)
         public void loadform(object Form)
@@ -56,7 +58,7 @@ namespace Bus_Sphere.packages
             MainPanel.Controls.Clear();
 
             // Add the UserControl to the panel
-            userControl.Dock = DockStyle.Fill;  // Dock to fill the panel
+            userControl.Dock = DockStyle.Fill;  // Dock to fill the 
             MainPanel.Controls.Add(userControl);  // Add UserControl to the panel
         }
 

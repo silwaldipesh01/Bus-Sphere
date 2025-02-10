@@ -26,7 +26,7 @@ namespace Bus_Sphere.CustomControls
             set
             {
                 borderSize = value;
-                this.Invalidate();
+                Invalidate();
             }
         }
 
@@ -37,7 +37,7 @@ namespace Bus_Sphere.CustomControls
             set
             {
                 borderRadius = value;
-                this.Invalidate();
+                Invalidate();
             }
         }
 
@@ -48,33 +48,33 @@ namespace Bus_Sphere.CustomControls
             set
             {
                 borderColor = value;
-                this.Invalidate();
+                Invalidate();
             }
         }
 
         [Category("RJ Code Advance")]
         public Color BackgroundColor
         {
-            get { return this.BackColor; }
-            set { this.BackColor = value; }
+            get { return BackColor; }
+            set { BackColor = value; }
         }
 
         [Category("RJ Code Advance")]
         public Color TextColor
         {
-            get { return this.ForeColor; }
-            set { this.ForeColor = value; }
+            get { return ForeColor; }
+            set { ForeColor = value; }
         }
 
         //Constructor
         public CustomBtn()
         {
-            this.FlatStyle = FlatStyle.Flat;
-            this.FlatAppearance.BorderSize = 0;
-            this.Size = new Size(150, 40);
-            this.BackColor = Color.MediumSlateBlue;
-            this.ForeColor = Color.White;
-            this.Resize += new EventHandler(Button_Resize);
+            FlatStyle = FlatStyle.Flat;
+            FlatAppearance.BorderSize = 0;
+            Size = new Size(150, 40);
+            BackColor = Color.MediumSlateBlue;
+            ForeColor = Color.White;
+            Resize += new EventHandler(Button_Resize);
         }
 
         //Methods
@@ -97,7 +97,7 @@ namespace Bus_Sphere.CustomControls
             base.OnPaint(pevent);
 
 
-            Rectangle rectSurface = this.ClientRectangle;
+            Rectangle rectSurface = ClientRectangle;
             Rectangle rectBorder = Rectangle.Inflate(rectSurface, -borderSize, -borderSize);
             int smoothSize = 2;
             if (borderSize > 0)
@@ -107,12 +107,12 @@ namespace Bus_Sphere.CustomControls
             {
                 using (GraphicsPath pathSurface = GetFigurePath(rectSurface, borderRadius))
                 using (GraphicsPath pathBorder = GetFigurePath(rectBorder, borderRadius - borderSize))
-                using (Pen penSurface = new Pen(this.Parent.BackColor, smoothSize))
+                using (Pen penSurface = new Pen(Parent.BackColor, smoothSize))
                 using (Pen penBorder = new Pen(borderColor, borderSize))
                 {
                     pevent.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
                     //Button surface
-                    this.Region = new Region(pathSurface);
+                    Region = new Region(pathSurface);
                     //Draw surface border for HD result
                     pevent.Graphics.DrawPath(penSurface, pathSurface);
 
@@ -126,14 +126,14 @@ namespace Bus_Sphere.CustomControls
             {
                 pevent.Graphics.SmoothingMode = SmoothingMode.None;
                 //Button surface
-                this.Region = new Region(rectSurface);
+                Region = new Region(rectSurface);
                 //Button border
                 if (borderSize >= 1)
                 {
                     using (Pen penBorder = new Pen(borderColor, borderSize))
                     {
                         penBorder.Alignment = PenAlignment.Inset;
-                        pevent.Graphics.DrawRectangle(penBorder, 0, 0, this.Width - 1, this.Height - 1);
+                        pevent.Graphics.DrawRectangle(penBorder, 0, 0, Width - 1, Height - 1);
                     }
                 }
             }
@@ -141,17 +141,17 @@ namespace Bus_Sphere.CustomControls
         protected override void OnHandleCreated(EventArgs e)
         {
             base.OnHandleCreated(e);
-            this.Parent.BackColorChanged += new EventHandler(Container_BackColorChanged);
+            Parent.BackColorChanged += new EventHandler(Container_BackColorChanged);
         }
 
         private void Container_BackColorChanged(object sender, EventArgs e)
         {
-            this.Invalidate();
+            Invalidate();
         }
         private void Button_Resize(object sender, EventArgs e)
         {
-            if (borderRadius > this.Height)
-                borderRadius = this.Height;
+            if (borderRadius > Height)
+                borderRadius = Height;
         }
     }
 }

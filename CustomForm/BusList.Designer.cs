@@ -1,4 +1,6 @@
-﻿namespace Bus_Sphere.CustomForm
+﻿using Bus_Sphere.CustomControls;
+
+namespace Bus_Sphere.CustomForm
 {
     partial class BusList
     {
@@ -28,7 +30,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BusList));
             panel1 = new Panel();
+            GoBackbtn = new CustomBtn();
             panel2 = new Panel();
             dataGridView1 = new DataGridView();
             panel1.SuspendLayout();
@@ -38,20 +42,41 @@
             // 
             // panel1
             // 
+            panel1.Controls.Add(GoBackbtn);
             panel1.Controls.Add(panel2);
             panel1.Dock = DockStyle.Fill;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1367, 819);
+            panel1.Size = new Size(1375, 759);
             panel1.TabIndex = 0;
+            // 
+            // GoBackbtn
+            // 
+            GoBackbtn.Anchor = AnchorStyles.None;
+            GoBackbtn.BackColor = Color.MediumSlateBlue;
+            GoBackbtn.BackgroundColor = Color.MediumSlateBlue;
+            GoBackbtn.BorderColor = Color.PaleVioletRed;
+            GoBackbtn.BorderRadius = 0;
+            GoBackbtn.BorderSize = 0;
+            GoBackbtn.FlatAppearance.BorderSize = 0;
+            GoBackbtn.FlatStyle = FlatStyle.Flat;
+            GoBackbtn.ForeColor = Color.White;
+            GoBackbtn.Image = (Image)resources.GetObject("GoBackbtn.Image");
+            GoBackbtn.Location = new Point(1261, 13);
+            GoBackbtn.Name = "GoBackbtn";
+            GoBackbtn.Size = new Size(46, 37);
+            GoBackbtn.TabIndex = 3;
+            GoBackbtn.TextColor = Color.White;
+            GoBackbtn.UseVisualStyleBackColor = false;
+            GoBackbtn.Click += GoBackbtn_Click;
             // 
             // panel2
             // 
-            panel2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panel2.Controls.Add(dataGridView1);
-            panel2.Location = new Point(15, 18);
+            panel2.Dock = DockStyle.Bottom;
+            panel2.Location = new Point(0, 56);
             panel2.Name = "panel2";
-            panel2.Size = new Size(1336, 782);
+            panel2.Size = new Size(1375, 703);
             panel2.TabIndex = 2;
             // 
             // dataGridView1
@@ -60,8 +85,9 @@
             dataGridView1.Dock = DockStyle.Fill;
             dataGridView1.Location = new Point(0, 0);
             dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(1336, 782);
+            dataGridView1.Size = new Size(1375, 703);
             dataGridView1.TabIndex = 0;
+            dataGridView1.CellDoubleClick += dataGridView1_CellDoubleClick;
             // 
             // BusList
             // 
@@ -69,7 +95,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(panel1);
             Name = "BusList";
-            Size = new Size(1367, 819);
+            Size = new Size(1375, 759);
             panel1.ResumeLayout(false);
             panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
@@ -81,5 +107,6 @@
         private Panel panel1;
         private Panel panel2;
         private DataGridView dataGridView1;
+        private CustomBtn GoBackbtn;
     }
 }

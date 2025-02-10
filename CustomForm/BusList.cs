@@ -30,9 +30,11 @@ namespace Bus_Sphere.CustomForm
             dataGridView1.CellMouseEnter += dataGridView1_CellMouseEnter;
             dataGridView1.CellMouseLeave += dataGridView1_CellMouseLeave;
             dataGridView1.CellClick += dataGridView1_CellClick;
+            dataGridView1.CellDoubleClick += dataGridView1_CellDoubleClick;
 
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            GoBackbtn.Visible = false;
         }
 
         private void LoadBusData()
@@ -63,27 +65,7 @@ namespace Bus_Sphere.CustomForm
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            // Ensure that a valid row is selected (ignore header row clicks)
-            if (e.RowIndex >= 0)
-            {
-                // Select the entire row
-                dataGridView1.Rows[e.RowIndex].Selected = true;
 
-                // Get the selected row
-                DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
-
-                // Extract data from the selected row
-                string busID = row.Cells["bus_id"].Value.ToString();
-                string busNumber = row.Cells["bus_number"].Value.ToString();
-                string busName = row.Cells["bus_name"].Value.ToString();
-                string busType = row.Cells["bus_type"].Value.ToString();
-                string totalSeats = row.Cells["total_seats"].Value.ToString();
-                string availableSeats = row.Cells["available_seats"].Value.ToString();
-
-                // Display selected bus details in a MessageBox (or TextBoxes)
-                //MessageBox.Show($"Selected Bus:\nID: {busID}\nNumber: {busNumber}\nName: {busName}\nType: {busType}\nSeats: {availableSeats}/{totalSeats}", "Bus Details");
-                LoadUserControl(new SeatSelection(busID));
-            }
         }
 
         private void dataGridView1_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
@@ -110,12 +92,50 @@ namespace Bus_Sphere.CustomForm
         public void LoadUserControl(UserControl userControl)
         {
             // Clear existing controls
-            panel1.BringToFront();
-            panel1.Controls.Clear();
+            panel2.BringToFront();
+            panel2.Controls.Clear();
 
             // Add the UserControl to the panel
-            userControl.Dock = DockStyle.Fill;  // Dock to fill the panel
-            panel1.Controls.Add(userControl);  // Add UserControl to the panel
+            userControl.Dock = DockStyle.None;  // Dock to fill the panel
+            userControl.BringToFront();
+           
+
+            panel2.Controls.Add(userControl);  // Add UserControl to the panel
+        }
+
+        private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Ensure that a valid row is selected (ignore header row clicks)
+            if (e.RowIndex >= 0)
+            {
+                // Select the entire row
+                dataGridView1.Rows[e.RowIndex].Selected = true;
+
+                // Get the selected row
+                DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+
+                // Extract data from the selected row
+                string busID = row.Cells["bus_id"].Value.ToString();
+                string busNumber = row.Cells["bus_number"].Value.ToString();
+                string busName = row.Cells["bus_name"].Value.ToString();
+                string busType = row.Cells["bus_type"].Value.ToString();
+                string totalSeats = row.Cells["total_seats"].Value.ToString();
+                string availableSeats = row.Cells["available_seats"].Value.ToString();
+
+                // Display selected bus details in a MessageBox (or TextBoxes)
+                //MessageBox.Show($"Selected Bus:\nID: {busID}\nNumber: {busNumber}\nName: {busName}\nType: {busType}\nSeats: {availableSeats}/{totalSeats}", "Bus Details");
+                GoBackbtn.Visible = true;
+                LoadUserControl(new SeatLayout(busID));
+
+             //   LoadUserControl(new SeatSelection(busID));
+                
+            }
+        }
+
+        private void GoBackbtn_Click(object sender, EventArgs e)
+        {
+           this.Controls.Clear();
+           this.Controls.Add(new BusList());
         }
     }
 }

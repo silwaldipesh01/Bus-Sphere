@@ -1,4 +1,6 @@
-﻿namespace Bus_Sphere.Models
+﻿using Bus_Sphere.CustomControls;
+
+namespace Bus_Sphere.Models
 {
     partial class SeatDesign
     {
@@ -67,6 +69,6 @@
 
         #endregion
 
-        private CustomControls.CustomBtn customBtn1;
+        private CustomBtn customBtn1;
     }
 }

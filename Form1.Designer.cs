@@ -1,4 +1,6 @@
-﻿namespace Bus_Sphere
+﻿using Bus_Sphere.CustomControls;
+
+namespace Bus_Sphere
 {
     partial class Form1
     {
@@ -201,7 +203,7 @@
 
         #endregion
         private PictureBox pictureBox1;
-        private CustomControls.CustomBtn LoginBtn;
+        private CustomBtn LoginBtn;
         private TextBox UsernameTxtBox;
         private TextBox PasswordTxtBox;
         private Label label1;
@@ -209,6 +211,6 @@
         private Label ValidUserTxt;
         private Label ForgotPassLbl;
         private MySql.Data.MySqlClient.MySqlCommand mySqlCommand1;
-        private CustomControls.CustomBtn SignUpBtn;
+        private CustomBtn SignUpBtn;
     }
 }
