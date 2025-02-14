@@ -63,16 +63,19 @@
             customBtn1 = new CustomControls.CustomBtn();
             pictureBox1 = new PictureBox();
             panel2 = new Panel();
+            CancelBtn = new CustomControls.CustomBtn();
+            CancelSeatTxtBox = new TextBox();
+            label4 = new Label();
             panel3 = new Panel();
             label6 = new Label();
-            seatTxt = new Label();
+            seatLbl = new Label();
             addressTxt = new Label();
             label3 = new Label();
             label2 = new Label();
             label1 = new Label();
-            customBtn32 = new CustomControls.CustomBtn();
-            seatsTxt = new TextBox();
-            textBox4 = new TextBox();
+            btnConfirm = new CustomControls.CustomBtn();
+            seatsTxtBx = new TextBox();
+            addressTxtBx = new TextBox();
             emailTxt = new TextBox();
             phoneTxt = new TextBox();
             nameTxt = new TextBox();
@@ -84,7 +87,6 @@
             // 
             // panel1
             // 
-            panel1.Anchor = AnchorStyles.None;
             panel1.BackColor = Color.CadetBlue;
             panel1.Controls.Add(customBtn31);
             panel1.Controls.Add(customBtn30);
@@ -118,9 +120,10 @@
             panel1.Controls.Add(customBtn2);
             panel1.Controls.Add(customBtn1);
             panel1.Controls.Add(pictureBox1);
-            panel1.Location = new Point(785, 0);
+            panel1.Dock = DockStyle.Right;
+            panel1.Location = new Point(714, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(499, 777);
+            panel1.Size = new Size(424, 758);
             panel1.TabIndex = 0;
             // 
             // customBtn31
@@ -135,9 +138,9 @@
             customBtn31.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             customBtn31.ForeColor = Color.Transparent;
             customBtn31.Image = (Image)resources.GetObject("customBtn31.Image");
-            customBtn31.Location = new Point(390, 695);
+            customBtn31.Location = new Point(327, 671);
             customBtn31.Name = "customBtn31";
-            customBtn31.Size = new Size(76, 76);
+            customBtn31.Size = new Size(65, 65);
             customBtn31.TabIndex = 63;
             customBtn31.Text = "31";
             customBtn31.TextColor = Color.Transparent;
@@ -155,9 +158,9 @@
             customBtn30.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             customBtn30.ForeColor = Color.Transparent;
             customBtn30.Image = (Image)resources.GetObject("customBtn30.Image");
-            customBtn30.Location = new Point(303, 699);
+            customBtn30.Location = new Point(256, 671);
             customBtn30.Name = "customBtn30";
-            customBtn30.Size = new Size(76, 76);
+            customBtn30.Size = new Size(65, 65);
             customBtn30.TabIndex = 62;
             customBtn30.Text = "30";
             customBtn30.TextColor = Color.Transparent;
@@ -175,9 +178,9 @@
             customBtn16.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             customBtn16.ForeColor = Color.Transparent;
             customBtn16.Image = (Image)resources.GetObject("customBtn16.Image");
-            customBtn16.Location = new Point(303, 121);
+            customBtn16.Location = new Point(256, 97);
             customBtn16.Name = "customBtn16";
-            customBtn16.Size = new Size(76, 76);
+            customBtn16.Size = new Size(65, 65);
             customBtn16.TabIndex = 61;
             customBtn16.Text = "16";
             customBtn16.TextColor = Color.Transparent;
@@ -195,9 +198,9 @@
             customBtn17.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             customBtn17.ForeColor = Color.Transparent;
             customBtn17.Image = (Image)resources.GetObject("customBtn17.Image");
-            customBtn17.Location = new Point(390, 121);
+            customBtn17.Location = new Point(327, 97);
             customBtn17.Name = "customBtn17";
-            customBtn17.Size = new Size(76, 76);
+            customBtn17.Size = new Size(65, 65);
             customBtn17.TabIndex = 60;
             customBtn17.Text = "17";
             customBtn17.TextColor = Color.Transparent;
@@ -215,9 +218,9 @@
             customBtn18.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             customBtn18.ForeColor = Color.Transparent;
             customBtn18.Image = (Image)resources.GetObject("customBtn18.Image");
-            customBtn18.Location = new Point(303, 203);
+            customBtn18.Location = new Point(256, 179);
             customBtn18.Name = "customBtn18";
-            customBtn18.Size = new Size(76, 76);
+            customBtn18.Size = new Size(65, 65);
             customBtn18.TabIndex = 59;
             customBtn18.Text = "18";
             customBtn18.TextColor = Color.Transparent;
@@ -235,9 +238,9 @@
             customBtn19.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             customBtn19.ForeColor = Color.Transparent;
             customBtn19.Image = (Image)resources.GetObject("customBtn19.Image");
-            customBtn19.Location = new Point(388, 203);
+            customBtn19.Location = new Point(325, 179);
             customBtn19.Name = "customBtn19";
-            customBtn19.Size = new Size(76, 76);
+            customBtn19.Size = new Size(65, 65);
             customBtn19.TabIndex = 58;
             customBtn19.Text = "19";
             customBtn19.TextColor = Color.Transparent;
@@ -255,9 +258,9 @@
             customBtn20.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             customBtn20.ForeColor = Color.Transparent;
             customBtn20.Image = (Image)resources.GetObject("customBtn20.Image");
-            customBtn20.Location = new Point(303, 285);
+            customBtn20.Location = new Point(256, 261);
             customBtn20.Name = "customBtn20";
-            customBtn20.Size = new Size(76, 76);
+            customBtn20.Size = new Size(65, 65);
             customBtn20.TabIndex = 57;
             customBtn20.Text = "20";
             customBtn20.TextColor = Color.Transparent;
@@ -275,9 +278,9 @@
             customBtn21.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             customBtn21.ForeColor = Color.Transparent;
             customBtn21.Image = (Image)resources.GetObject("customBtn21.Image");
-            customBtn21.Location = new Point(388, 285);
+            customBtn21.Location = new Point(325, 261);
             customBtn21.Name = "customBtn21";
-            customBtn21.Size = new Size(76, 76);
+            customBtn21.Size = new Size(65, 65);
             customBtn21.TabIndex = 56;
             customBtn21.Text = "21";
             customBtn21.TextColor = Color.Transparent;
@@ -295,9 +298,9 @@
             customBtn22.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             customBtn22.ForeColor = Color.Transparent;
             customBtn22.Image = (Image)resources.GetObject("customBtn22.Image");
-            customBtn22.Location = new Point(303, 367);
+            customBtn22.Location = new Point(256, 343);
             customBtn22.Name = "customBtn22";
-            customBtn22.Size = new Size(76, 76);
+            customBtn22.Size = new Size(65, 65);
             customBtn22.TabIndex = 55;
             customBtn22.Text = "22";
             customBtn22.TextColor = Color.Transparent;
@@ -315,9 +318,9 @@
             customBtn23.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             customBtn23.ForeColor = Color.Transparent;
             customBtn23.Image = (Image)resources.GetObject("customBtn23.Image");
-            customBtn23.Location = new Point(388, 367);
+            customBtn23.Location = new Point(325, 343);
             customBtn23.Name = "customBtn23";
-            customBtn23.Size = new Size(76, 76);
+            customBtn23.Size = new Size(65, 65);
             customBtn23.TabIndex = 54;
             customBtn23.Text = "23";
             customBtn23.TextColor = Color.Transparent;
@@ -335,9 +338,9 @@
             customBtn24.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             customBtn24.ForeColor = Color.Transparent;
             customBtn24.Image = (Image)resources.GetObject("customBtn24.Image");
-            customBtn24.Location = new Point(303, 449);
+            customBtn24.Location = new Point(256, 425);
             customBtn24.Name = "customBtn24";
-            customBtn24.Size = new Size(76, 76);
+            customBtn24.Size = new Size(65, 65);
             customBtn24.TabIndex = 53;
             customBtn24.Text = "24";
             customBtn24.TextColor = Color.Transparent;
@@ -355,9 +358,9 @@
             customBtn25.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             customBtn25.ForeColor = Color.Transparent;
             customBtn25.Image = (Image)resources.GetObject("customBtn25.Image");
-            customBtn25.Location = new Point(388, 449);
+            customBtn25.Location = new Point(325, 425);
             customBtn25.Name = "customBtn25";
-            customBtn25.Size = new Size(76, 76);
+            customBtn25.Size = new Size(65, 65);
             customBtn25.TabIndex = 52;
             customBtn25.Text = "25";
             customBtn25.TextColor = Color.Transparent;
@@ -375,9 +378,9 @@
             customBtn26.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             customBtn26.ForeColor = Color.Transparent;
             customBtn26.Image = (Image)resources.GetObject("customBtn26.Image");
-            customBtn26.Location = new Point(303, 531);
+            customBtn26.Location = new Point(256, 507);
             customBtn26.Name = "customBtn26";
-            customBtn26.Size = new Size(76, 76);
+            customBtn26.Size = new Size(65, 65);
             customBtn26.TabIndex = 51;
             customBtn26.Text = "26";
             customBtn26.TextColor = Color.Transparent;
@@ -395,9 +398,9 @@
             customBtn27.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             customBtn27.ForeColor = Color.Transparent;
             customBtn27.Image = (Image)resources.GetObject("customBtn27.Image");
-            customBtn27.Location = new Point(388, 531);
+            customBtn27.Location = new Point(325, 507);
             customBtn27.Name = "customBtn27";
-            customBtn27.Size = new Size(76, 76);
+            customBtn27.Size = new Size(65, 65);
             customBtn27.TabIndex = 50;
             customBtn27.Text = "27";
             customBtn27.TextColor = Color.Transparent;
@@ -415,9 +418,9 @@
             customBtn28.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             customBtn28.ForeColor = Color.Transparent;
             customBtn28.Image = (Image)resources.GetObject("customBtn28.Image");
-            customBtn28.Location = new Point(303, 613);
+            customBtn28.Location = new Point(256, 589);
             customBtn28.Name = "customBtn28";
-            customBtn28.Size = new Size(76, 76);
+            customBtn28.Size = new Size(65, 65);
             customBtn28.TabIndex = 49;
             customBtn28.Text = "28";
             customBtn28.TextColor = Color.Transparent;
@@ -435,9 +438,9 @@
             customBtn29.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             customBtn29.ForeColor = Color.Transparent;
             customBtn29.Image = (Image)resources.GetObject("customBtn29.Image");
-            customBtn29.Location = new Point(388, 613);
+            customBtn29.Location = new Point(325, 589);
             customBtn29.Name = "customBtn29";
-            customBtn29.Size = new Size(76, 76);
+            customBtn29.Size = new Size(65, 65);
             customBtn29.TabIndex = 48;
             customBtn29.Text = "29";
             customBtn29.TextColor = Color.Transparent;
@@ -455,9 +458,9 @@
             customBtn15.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             customBtn15.ForeColor = Color.Transparent;
             customBtn15.Image = (Image)resources.GetObject("customBtn15.Image");
-            customBtn15.Location = new Point(201, 695);
+            customBtn15.Location = new Point(181, 671);
             customBtn15.Name = "customBtn15";
-            customBtn15.Size = new Size(76, 76);
+            customBtn15.Size = new Size(65, 65);
             customBtn15.TabIndex = 47;
             customBtn15.Text = "15";
             customBtn15.TextColor = Color.Transparent;
@@ -475,9 +478,9 @@
             customBtn14.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             customBtn14.ForeColor = Color.Transparent;
             customBtn14.Image = (Image)resources.GetObject("customBtn14.Image");
-            customBtn14.Location = new Point(111, 695);
+            customBtn14.Location = new Point(110, 671);
             customBtn14.Name = "customBtn14";
-            customBtn14.Size = new Size(76, 76);
+            customBtn14.Size = new Size(65, 65);
             customBtn14.TabIndex = 46;
             customBtn14.Text = "14";
             customBtn14.TextColor = Color.Transparent;
@@ -495,9 +498,9 @@
             customBtn13.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             customBtn13.ForeColor = Color.Transparent;
             customBtn13.Image = (Image)resources.GetObject("customBtn13.Image");
-            customBtn13.Location = new Point(22, 695);
+            customBtn13.Location = new Point(39, 671);
             customBtn13.Name = "customBtn13";
-            customBtn13.Size = new Size(76, 76);
+            customBtn13.Size = new Size(65, 65);
             customBtn13.TabIndex = 45;
             customBtn13.Text = "13";
             customBtn13.TextColor = Color.Transparent;
@@ -515,9 +518,9 @@
             customBtn12.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             customBtn12.ForeColor = Color.Transparent;
             customBtn12.Image = (Image)resources.GetObject("customBtn12.Image");
-            customBtn12.Location = new Point(111, 613);
+            customBtn12.Location = new Point(110, 589);
             customBtn12.Name = "customBtn12";
-            customBtn12.Size = new Size(76, 76);
+            customBtn12.Size = new Size(65, 65);
             customBtn12.TabIndex = 44;
             customBtn12.Text = "12";
             customBtn12.TextColor = Color.Transparent;
@@ -535,9 +538,9 @@
             customBtn11.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             customBtn11.ForeColor = Color.Transparent;
             customBtn11.Image = (Image)resources.GetObject("customBtn11.Image");
-            customBtn11.Location = new Point(22, 613);
+            customBtn11.Location = new Point(39, 589);
             customBtn11.Name = "customBtn11";
-            customBtn11.Size = new Size(76, 76);
+            customBtn11.Size = new Size(65, 65);
             customBtn11.TabIndex = 43;
             customBtn11.Text = "11";
             customBtn11.TextColor = Color.Transparent;
@@ -555,9 +558,9 @@
             customBtn10.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             customBtn10.ForeColor = Color.Transparent;
             customBtn10.Image = (Image)resources.GetObject("customBtn10.Image");
-            customBtn10.Location = new Point(111, 531);
+            customBtn10.Location = new Point(110, 507);
             customBtn10.Name = "customBtn10";
-            customBtn10.Size = new Size(76, 76);
+            customBtn10.Size = new Size(65, 65);
             customBtn10.TabIndex = 42;
             customBtn10.Text = "10";
             customBtn10.TextColor = Color.Transparent;
@@ -575,9 +578,9 @@
             customBtn9.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             customBtn9.ForeColor = Color.Transparent;
             customBtn9.Image = (Image)resources.GetObject("customBtn9.Image");
-            customBtn9.Location = new Point(22, 531);
+            customBtn9.Location = new Point(39, 507);
             customBtn9.Name = "customBtn9";
-            customBtn9.Size = new Size(76, 76);
+            customBtn9.Size = new Size(65, 65);
             customBtn9.TabIndex = 41;
             customBtn9.Text = "9";
             customBtn9.TextColor = Color.Transparent;
@@ -595,9 +598,9 @@
             customBtn8.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             customBtn8.ForeColor = Color.Transparent;
             customBtn8.Image = (Image)resources.GetObject("customBtn8.Image");
-            customBtn8.Location = new Point(111, 449);
+            customBtn8.Location = new Point(110, 425);
             customBtn8.Name = "customBtn8";
-            customBtn8.Size = new Size(76, 76);
+            customBtn8.Size = new Size(65, 65);
             customBtn8.TabIndex = 40;
             customBtn8.Text = "8";
             customBtn8.TextColor = Color.Transparent;
@@ -615,9 +618,9 @@
             customBtn7.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             customBtn7.ForeColor = Color.Transparent;
             customBtn7.Image = (Image)resources.GetObject("customBtn7.Image");
-            customBtn7.Location = new Point(22, 449);
+            customBtn7.Location = new Point(39, 425);
             customBtn7.Name = "customBtn7";
-            customBtn7.Size = new Size(76, 76);
+            customBtn7.Size = new Size(65, 65);
             customBtn7.TabIndex = 39;
             customBtn7.Text = "7";
             customBtn7.TextColor = Color.Transparent;
@@ -635,9 +638,9 @@
             customBtn6.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             customBtn6.ForeColor = Color.Transparent;
             customBtn6.Image = (Image)resources.GetObject("customBtn6.Image");
-            customBtn6.Location = new Point(111, 367);
+            customBtn6.Location = new Point(110, 343);
             customBtn6.Name = "customBtn6";
-            customBtn6.Size = new Size(76, 76);
+            customBtn6.Size = new Size(65, 65);
             customBtn6.TabIndex = 38;
             customBtn6.Text = "6";
             customBtn6.TextColor = Color.Transparent;
@@ -655,9 +658,9 @@
             customBtn5.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             customBtn5.ForeColor = Color.Transparent;
             customBtn5.Image = (Image)resources.GetObject("customBtn5.Image");
-            customBtn5.Location = new Point(22, 367);
+            customBtn5.Location = new Point(39, 343);
             customBtn5.Name = "customBtn5";
-            customBtn5.Size = new Size(76, 76);
+            customBtn5.Size = new Size(65, 65);
             customBtn5.TabIndex = 37;
             customBtn5.Text = "5";
             customBtn5.TextColor = Color.Transparent;
@@ -675,9 +678,9 @@
             customBtn4.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             customBtn4.ForeColor = Color.Transparent;
             customBtn4.Image = (Image)resources.GetObject("customBtn4.Image");
-            customBtn4.Location = new Point(111, 285);
+            customBtn4.Location = new Point(110, 261);
             customBtn4.Name = "customBtn4";
-            customBtn4.Size = new Size(76, 76);
+            customBtn4.Size = new Size(65, 65);
             customBtn4.TabIndex = 36;
             customBtn4.Text = "4";
             customBtn4.TextColor = Color.Transparent;
@@ -695,9 +698,9 @@
             customBtn3.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             customBtn3.ForeColor = Color.Transparent;
             customBtn3.Image = (Image)resources.GetObject("customBtn3.Image");
-            customBtn3.Location = new Point(22, 285);
+            customBtn3.Location = new Point(39, 261);
             customBtn3.Name = "customBtn3";
-            customBtn3.Size = new Size(76, 76);
+            customBtn3.Size = new Size(65, 65);
             customBtn3.TabIndex = 35;
             customBtn3.Text = "3";
             customBtn3.TextColor = Color.Transparent;
@@ -715,9 +718,9 @@
             customBtn2.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             customBtn2.ForeColor = Color.Transparent;
             customBtn2.Image = (Image)resources.GetObject("customBtn2.Image");
-            customBtn2.Location = new Point(111, 203);
+            customBtn2.Location = new Point(110, 179);
             customBtn2.Name = "customBtn2";
-            customBtn2.Size = new Size(76, 76);
+            customBtn2.Size = new Size(65, 65);
             customBtn2.TabIndex = 34;
             customBtn2.Text = "2";
             customBtn2.TextColor = Color.Transparent;
@@ -735,9 +738,9 @@
             customBtn1.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
             customBtn1.ForeColor = Color.Transparent;
             customBtn1.Image = (Image)resources.GetObject("customBtn1.Image");
-            customBtn1.Location = new Point(22, 203);
+            customBtn1.Location = new Point(39, 179);
             customBtn1.Name = "customBtn1";
-            customBtn1.Size = new Size(76, 76);
+            customBtn1.Size = new Size(65, 65);
             customBtn1.TabIndex = 33;
             customBtn1.Text = "1";
             customBtn1.TextColor = Color.Transparent;
@@ -747,72 +750,116 @@
             // 
             pictureBox1.BackColor = SystemColors.ActiveCaption;
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(341, 39);
+            pictureBox1.Location = new Point(292, 3);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(76, 76);
+            pictureBox1.Size = new Size(55, 54);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 32;
             pictureBox1.TabStop = false;
             // 
             // panel2
             // 
-            panel2.Anchor = AnchorStyles.None;
             panel2.BackColor = Color.Pink;
+            panel2.Controls.Add(CancelBtn);
+            panel2.Controls.Add(CancelSeatTxtBox);
+            panel2.Controls.Add(label4);
             panel2.Controls.Add(panel3);
-            panel2.Location = new Point(-95, -2);
+            panel2.Dock = DockStyle.Left;
+            panel2.Location = new Point(0, 0);
             panel2.Name = "panel2";
-            panel2.Size = new Size(874, 781);
+            panel2.Size = new Size(717, 758);
             panel2.TabIndex = 1;
+            panel2.Paint += panel2_Paint;
+            // 
+            // CancelBtn
+            // 
+            CancelBtn.BackColor = Color.FromArgb(255, 128, 0);
+            CancelBtn.BackgroundColor = Color.FromArgb(255, 128, 0);
+            CancelBtn.BorderColor = Color.PaleVioletRed;
+            CancelBtn.BorderRadius = 10;
+            CancelBtn.BorderSize = 0;
+            CancelBtn.FlatAppearance.BorderSize = 0;
+            CancelBtn.FlatStyle = FlatStyle.Flat;
+            CancelBtn.ForeColor = Color.White;
+            CancelBtn.Location = new Point(379, 664);
+            CancelBtn.Name = "CancelBtn";
+            CancelBtn.Size = new Size(121, 39);
+            CancelBtn.TabIndex = 6;
+            CancelBtn.Text = "Cancel Ticket";
+            CancelBtn.TextColor = Color.White;
+            CancelBtn.UseVisualStyleBackColor = false;
+            CancelBtn.Click += CancelBtn_Click_1;
+            // 
+            // CancelSeatTxtBox
+            // 
+            CancelSeatTxtBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            CancelSeatTxtBox.Location = new Point(240, 668);
+            CancelSeatTxtBox.Name = "CancelSeatTxtBox";
+            CancelSeatTxtBox.Size = new Size(100, 29);
+            CancelSeatTxtBox.TabIndex = 5;
+            CancelSeatTxtBox.TextChanged += CancelSeatTxtBox_TextChanged;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label4.Location = new Point(81, 664);
+            label4.Name = "label4";
+            label4.Size = new Size(153, 21);
+            label4.TabIndex = 3;
+            label4.Text = "Enter seats to cancel:";
+            label4.Click += label4_Click;
             // 
             // panel3
             // 
             panel3.Anchor = AnchorStyles.None;
             panel3.BackColor = Color.FromArgb(0, 192, 192);
             panel3.Controls.Add(label6);
-            panel3.Controls.Add(seatTxt);
+            panel3.Controls.Add(seatLbl);
             panel3.Controls.Add(addressTxt);
             panel3.Controls.Add(label3);
             panel3.Controls.Add(label2);
             panel3.Controls.Add(label1);
-            panel3.Controls.Add(customBtn32);
-            panel3.Controls.Add(seatsTxt);
-            panel3.Controls.Add(textBox4);
+            panel3.Controls.Add(btnConfirm);
+            panel3.Controls.Add(seatsTxtBx);
+            panel3.Controls.Add(addressTxtBx);
             panel3.Controls.Add(emailTxt);
             panel3.Controls.Add(phoneTxt);
             panel3.Controls.Add(nameTxt);
-            panel3.Location = new Point(170, 155);
+            panel3.Location = new Point(46, 174);
             panel3.Name = "panel3";
-            panel3.Size = new Size(624, 410);
-            panel3.TabIndex = 0;
+            panel3.Size = new Size(627, 435);
+            panel3.TabIndex = 1;
+            panel3.Paint += panel3_Paint;
             // 
             // label6
             // 
             label6.Anchor = AnchorStyles.None;
             label6.AutoSize = true;
             label6.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label6.Location = new Point(214, 14);
+            label6.Location = new Point(194, 52);
             label6.Name = "label6";
             label6.Size = new Size(228, 30);
             label6.TabIndex = 11;
             label6.Text = "Passenger Details Form";
             // 
-            // seatTxt
+            // seatLbl
             // 
-            seatTxt.Anchor = AnchorStyles.None;
-            seatTxt.AutoSize = true;
-            seatTxt.Font = new Font("Segoe UI", 12F);
-            seatTxt.Location = new Point(13, 259);
-            seatTxt.Name = "seatTxt";
-            seatTxt.Size = new Size(94, 21);
-            seatTxt.TabIndex = 10;
-            seatTxt.Text = "Enter Seats :";
+            seatLbl.Anchor = AnchorStyles.None;
+            seatLbl.AutoSize = true;
+            seatLbl.Font = new Font("Segoe UI", 12F);
+            seatLbl.Location = new Point(18, 288);
+            seatLbl.Name = "seatLbl";
+            seatLbl.Size = new Size(94, 21);
+            seatLbl.TabIndex = 10;
+            seatLbl.Text = "Enter Seats :";
             // 
             // addressTxt
             // 
             addressTxt.Anchor = AnchorStyles.None;
             addressTxt.AutoSize = true;
             addressTxt.Font = new Font("Segoe UI", 12F);
-            addressTxt.Location = new Point(357, 186);
+            addressTxt.Location = new Point(362, 224);
             addressTxt.Name = "addressTxt";
             addressTxt.Size = new Size(73, 21);
             addressTxt.TabIndex = 9;
@@ -823,7 +870,7 @@
             label3.Anchor = AnchorStyles.None;
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 12F);
-            label3.Location = new Point(369, 124);
+            label3.Location = new Point(374, 162);
             label3.Name = "label3";
             label3.Size = new Size(61, 21);
             label3.TabIndex = 8;
@@ -834,7 +881,7 @@
             label2.Anchor = AnchorStyles.None;
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 12F);
-            label2.Location = new Point(48, 186);
+            label2.Location = new Point(53, 224);
             label2.Name = "label2";
             label2.Size = new Size(55, 21);
             label2.TabIndex = 7;
@@ -845,54 +892,55 @@
             label1.Anchor = AnchorStyles.None;
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 12F);
-            label1.Location = new Point(48, 124);
+            label1.Location = new Point(53, 162);
             label1.Name = "label1";
             label1.Size = new Size(59, 21);
             label1.TabIndex = 6;
             label1.Text = "Name :";
             // 
-            // customBtn32
+            // btnConfirm
             // 
-            customBtn32.Anchor = AnchorStyles.None;
-            customBtn32.BackColor = Color.MediumSlateBlue;
-            customBtn32.BackgroundColor = Color.MediumSlateBlue;
-            customBtn32.BorderColor = Color.PaleVioletRed;
-            customBtn32.BorderRadius = 0;
-            customBtn32.BorderSize = 0;
-            customBtn32.FlatAppearance.BorderSize = 0;
-            customBtn32.FlatStyle = FlatStyle.Flat;
-            customBtn32.ForeColor = Color.White;
-            customBtn32.Location = new Point(267, 356);
-            customBtn32.Name = "customBtn32";
-            customBtn32.Size = new Size(150, 40);
-            customBtn32.TabIndex = 5;
-            customBtn32.Text = "customBtn32";
-            customBtn32.TextColor = Color.White;
-            customBtn32.UseVisualStyleBackColor = false;
+            btnConfirm.Anchor = AnchorStyles.None;
+            btnConfirm.BackColor = Color.MediumSlateBlue;
+            btnConfirm.BackgroundColor = Color.MediumSlateBlue;
+            btnConfirm.BorderColor = Color.PaleVioletRed;
+            btnConfirm.BorderRadius = 10;
+            btnConfirm.BorderSize = 0;
+            btnConfirm.FlatAppearance.BorderSize = 0;
+            btnConfirm.FlatStyle = FlatStyle.Flat;
+            btnConfirm.ForeColor = Color.White;
+            btnConfirm.Location = new Point(249, 351);
+            btnConfirm.Name = "btnConfirm";
+            btnConfirm.Size = new Size(150, 40);
+            btnConfirm.TabIndex = 5;
+            btnConfirm.Text = "Confirm";
+            btnConfirm.TextColor = Color.White;
+            btnConfirm.UseVisualStyleBackColor = false;
+            btnConfirm.Click += btnConfirm_Click;
             // 
-            // seatsTxt
+            // seatsTxtBx
             // 
-            seatsTxt.Anchor = AnchorStyles.None;
-            seatsTxt.Font = new Font("Segoe UI", 12F);
-            seatsTxt.Location = new Point(123, 256);
-            seatsTxt.Name = "seatsTxt";
-            seatsTxt.Size = new Size(155, 29);
-            seatsTxt.TabIndex = 4;
+            seatsTxtBx.Anchor = AnchorStyles.None;
+            seatsTxtBx.Font = new Font("Segoe UI", 12F);
+            seatsTxtBx.Location = new Point(128, 285);
+            seatsTxtBx.Name = "seatsTxtBx";
+            seatsTxtBx.Size = new Size(155, 29);
+            seatsTxtBx.TabIndex = 4;
             // 
-            // textBox4
+            // addressTxtBx
             // 
-            textBox4.Anchor = AnchorStyles.None;
-            textBox4.Font = new Font("Segoe UI", 12F);
-            textBox4.Location = new Point(440, 183);
-            textBox4.Name = "textBox4";
-            textBox4.Size = new Size(155, 29);
-            textBox4.TabIndex = 3;
+            addressTxtBx.Anchor = AnchorStyles.None;
+            addressTxtBx.Font = new Font("Segoe UI", 12F);
+            addressTxtBx.Location = new Point(445, 221);
+            addressTxtBx.Name = "addressTxtBx";
+            addressTxtBx.Size = new Size(155, 29);
+            addressTxtBx.TabIndex = 3;
             // 
             // emailTxt
             // 
             emailTxt.Anchor = AnchorStyles.None;
             emailTxt.Font = new Font("Segoe UI", 12F);
-            emailTxt.Location = new Point(123, 183);
+            emailTxt.Location = new Point(128, 221);
             emailTxt.Name = "emailTxt";
             emailTxt.Size = new Size(155, 29);
             emailTxt.TabIndex = 2;
@@ -901,7 +949,7 @@
             // 
             phoneTxt.Anchor = AnchorStyles.None;
             phoneTxt.Font = new Font("Segoe UI", 12F);
-            phoneTxt.Location = new Point(440, 121);
+            phoneTxt.Location = new Point(445, 159);
             phoneTxt.Name = "phoneTxt";
             phoneTxt.Size = new Size(155, 29);
             phoneTxt.TabIndex = 1;
@@ -910,7 +958,7 @@
             // 
             nameTxt.Anchor = AnchorStyles.None;
             nameTxt.Font = new Font("Segoe UI", 12F);
-            nameTxt.Location = new Point(123, 121);
+            nameTxt.Location = new Point(128, 159);
             nameTxt.Name = "nameTxt";
             nameTxt.Size = new Size(155, 29);
             nameTxt.TabIndex = 0;
@@ -922,10 +970,11 @@
             Controls.Add(panel2);
             Controls.Add(panel1);
             Name = "SeatLayout";
-            Size = new Size(1284, 777);
+            Size = new Size(1138, 758);
             panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             panel2.ResumeLayout(false);
+            panel2.PerformLayout();
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
             ResumeLayout(false);
@@ -968,17 +1017,20 @@
         private CustomControls.CustomBtn customBtn1;
         private PictureBox pictureBox1;
         private Panel panel3;
-        private TextBox phoneTxt;
-        private TextBox nameTxt;
-        private Label seatTxt;
+        private Label label6;
+        private Label seatLbl;
         private Label addressTxt;
         private Label label3;
         private Label label2;
         private Label label1;
-        private CustomControls.CustomBtn customBtn32;
-        private TextBox seatsTxt;
-        private TextBox textBox4;
+        private CustomControls.CustomBtn btnConfirm;
+        private TextBox seatsTxtBx;
+        private TextBox addressTxtBx;
         private TextBox emailTxt;
-        private Label label6;
+        private TextBox phoneTxt;
+        private TextBox nameTxt;
+        private Label label4;
+        private TextBox CancelSeatTxtBox;
+        private CustomControls.CustomBtn CancelBtn;
     }
 }

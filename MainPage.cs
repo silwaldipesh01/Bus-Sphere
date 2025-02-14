@@ -25,10 +25,10 @@ namespace Bus_Sphere.packages
             //LoadUserControl(loadBusesFormControl);
             //SeatSelection seatSelection = new SeatSelection();
             //LoadUserControl(seatSelection);
-            //BusList busList = new BusList();
-            //LoadUserControl(busList);
-            SeatLayout seatLayout = new SeatLayout("1");
-            LoadUserControl(seatLayout);
+            BusList busList = new BusList();
+            LoadUserControl(busList);
+            //SeatLayout seatLayout = new SeatLayout("1");
+            //LoadUserControl(seatLayout);
         }
         //    public void loadform(object Form)
         public void loadform(object Form)
@@ -63,6 +63,11 @@ namespace Bus_Sphere.packages
         }
 
         private void MainPanel_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void busList1_Load(object sender, EventArgs e)
         {
 
         }

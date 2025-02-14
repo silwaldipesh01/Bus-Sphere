@@ -1,12 +1,13 @@
 using Bus_Sphere.CustomControls;
 using MySql.Data.MySqlClient;
 using BCrypt.Net;
-using static Bus_Sphere.Form1;
+using static Bus_Sphere.LoginPage;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using System.Data;
+using Bus_Sphere.packages;
 namespace Bus_Sphere
 {
-    public partial class Form1 : Form
+    public partial class LoginPage : Form
     {
         public class PasswordHasher
         {
@@ -22,14 +23,13 @@ namespace Bus_Sphere
             }
         }
         string connectionString = "server=localhost;user=root;database=bussphere;port=3306;password=";
-        public Form1()
+        public LoginPage()
         {
             InitializeComponent();
             ValidUserTxt.Visible = false;
             ValidUserTxt.Text = "Invalid Username or Password";
         }
-        String username = "admin";
-        String password = "admin";
+       
         private void Form1_Load(object sender, EventArgs e)
         {
 
@@ -61,7 +61,8 @@ namespace Bus_Sphere
                         if (PasswordHasher.ValidatePassword(PasswordTxtBox.Text, $"{reader["passwordhash"]}"))
                         {
                             this.Hide();
-                           // new BusSphere().Show();
+                          // new MainPage().Show();
+                          new MainPage().Show();
                         }
                         else
                         {

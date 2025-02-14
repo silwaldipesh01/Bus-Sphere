@@ -2,7 +2,7 @@
 
 namespace Bus_Sphere
 {
-    partial class Form1
+    partial class LoginPage
     {
         /// <summary>
         ///  Required designer variable.
@@ -30,9 +30,9 @@ namespace Bus_Sphere
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoginPage));
             pictureBox1 = new PictureBox();
-            LoginBtn = new CustomControls.CustomBtn();
+            LoginBtn = new CustomBtn();
             UsernameTxtBox = new TextBox();
             PasswordTxtBox = new TextBox();
             label1 = new Label();
@@ -40,7 +40,7 @@ namespace Bus_Sphere
             ValidUserTxt = new Label();
             ForgotPassLbl = new Label();
             mySqlCommand1 = new MySql.Data.MySqlClient.MySqlCommand();
-            SignUpBtn = new CustomControls.CustomBtn();
+            SignUpBtn = new CustomBtn();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -67,7 +67,7 @@ namespace Bus_Sphere
             LoginBtn.FlatStyle = FlatStyle.Flat;
             LoginBtn.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             LoginBtn.ForeColor = Color.Transparent;
-            LoginBtn.Location = new Point(505, 460);
+            LoginBtn.Location = new Point(505, 466);
             LoginBtn.Name = "LoginBtn";
             LoginBtn.Size = new Size(284, 40);
             LoginBtn.TabIndex = 8;
@@ -78,19 +78,21 @@ namespace Bus_Sphere
             // 
             // UsernameTxtBox
             // 
+            UsernameTxtBox.Font = new Font("Microsoft Sans Serif", 12F);
             UsernameTxtBox.Location = new Point(610, 332);
             UsernameTxtBox.Margin = new Padding(2);
             UsernameTxtBox.Name = "UsernameTxtBox";
-            UsernameTxtBox.Size = new Size(179, 23);
+            UsernameTxtBox.Size = new Size(179, 26);
             UsernameTxtBox.TabIndex = 9;
             // 
             // PasswordTxtBox
             // 
+            PasswordTxtBox.Font = new Font("Microsoft Sans Serif", 12F);
             PasswordTxtBox.ForeColor = SystemColors.Desktop;
             PasswordTxtBox.Location = new Point(610, 399);
             PasswordTxtBox.Name = "PasswordTxtBox";
             PasswordTxtBox.PasswordChar = '*';
-            PasswordTxtBox.Size = new Size(179, 23);
+            PasswordTxtBox.Size = new Size(179, 26);
             PasswordTxtBox.TabIndex = 10;
             PasswordTxtBox.TextChanged += textBox2_TextChanged;
             // 
@@ -98,10 +100,10 @@ namespace Bus_Sphere
             // 
             label1.AutoSize = true;
             label1.BackColor = Color.Transparent;
-            label1.Font = new Font("Segoe UI", 12F);
+            label1.Font = new Font("Microsoft Sans Serif", 12F);
             label1.Location = new Point(505, 399);
             label1.Name = "label1";
-            label1.Size = new Size(76, 21);
+            label1.Size = new Size(78, 20);
             label1.TabIndex = 11;
             label1.Text = "Password";
             label1.Click += label1_Click;
@@ -110,10 +112,10 @@ namespace Bus_Sphere
             // 
             label2.AutoSize = true;
             label2.BackColor = Color.Transparent;
-            label2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label2.Font = new Font("Microsoft Sans Serif", 12F);
             label2.Location = new Point(505, 334);
             label2.Name = "label2";
-            label2.Size = new Size(81, 21);
+            label2.Size = new Size(83, 20);
             label2.TabIndex = 12;
             label2.Text = "Username";
             // 
@@ -164,7 +166,7 @@ namespace Bus_Sphere
             SignUpBtn.FlatStyle = FlatStyle.Flat;
             SignUpBtn.Font = new Font("Comic Sans MS", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             SignUpBtn.ForeColor = Color.Transparent;
-            SignUpBtn.Location = new Point(1170, 565);
+            SignUpBtn.Location = new Point(1170, 571);
             SignUpBtn.Name = "SignUpBtn";
             SignUpBtn.Size = new Size(122, 40);
             SignUpBtn.TabIndex = 14;
@@ -173,7 +175,7 @@ namespace Bus_Sphere
             SignUpBtn.UseVisualStyleBackColor = false;
             SignUpBtn.Click += SignUpBtn_Click;
             // 
-            // Form1
+            // LoginPage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -181,7 +183,7 @@ namespace Bus_Sphere
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = ImageLayout.Stretch;
             CausesValidation = false;
-            ClientSize = new Size(1324, 626);
+            ClientSize = new Size(1324, 638);
             Controls.Add(ForgotPassLbl);
             Controls.Add(SignUpBtn);
             Controls.Add(ValidUserTxt);
@@ -192,7 +194,7 @@ namespace Bus_Sphere
             Controls.Add(LoginBtn);
             Controls.Add(pictureBox1);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Name = "Form1";
+            Name = "LoginPage";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Login";
             Load += Form1_Load;

@@ -58,7 +58,7 @@ namespace Bus_Sphere.packages
             MenuPanel.Dock = DockStyle.Left;
             MenuPanel.Location = new Point(0, 0);
             MenuPanel.Name = "MenuPanel";
-            MenuPanel.Size = new Size(287, 814);
+            MenuPanel.Size = new Size(278, 814);
             MenuPanel.TabIndex = 1;
             // 
             // customBtn9
@@ -71,11 +71,11 @@ namespace Bus_Sphere.packages
             customBtn9.FlatAppearance.BorderSize = 0;
             customBtn9.FlatStyle = FlatStyle.Flat;
             customBtn9.ForeColor = Color.White;
-            customBtn9.Location = new Point(0, 590);
+            customBtn9.Location = new Point(3, 428);
             customBtn9.Name = "customBtn9";
-            customBtn9.Size = new Size(284, 40);
+            customBtn9.Size = new Size(270, 40);
             customBtn9.TabIndex = 10;
-            customBtn9.Text = "customBtn9";
+            customBtn9.Text = "Bus Details";
             customBtn9.TextColor = Color.White;
             customBtn9.UseVisualStyleBackColor = false;
             // 
@@ -89,11 +89,11 @@ namespace Bus_Sphere.packages
             customBtn8.FlatAppearance.BorderSize = 0;
             customBtn8.FlatStyle = FlatStyle.Flat;
             customBtn8.ForeColor = Color.White;
-            customBtn8.Location = new Point(0, 544);
+            customBtn8.Location = new Point(3, 566);
             customBtn8.Name = "customBtn8";
-            customBtn8.Size = new Size(284, 40);
+            customBtn8.Size = new Size(270, 40);
             customBtn8.TabIndex = 9;
-            customBtn8.Text = "customBtn8";
+            customBtn8.Text = "staffs";
             customBtn8.TextColor = Color.White;
             customBtn8.UseVisualStyleBackColor = false;
             // 
@@ -107,11 +107,11 @@ namespace Bus_Sphere.packages
             customBtn7.FlatAppearance.BorderSize = 0;
             customBtn7.FlatStyle = FlatStyle.Flat;
             customBtn7.ForeColor = Color.White;
-            customBtn7.Location = new Point(0, 498);
+            customBtn7.Location = new Point(3, 520);
             customBtn7.Name = "customBtn7";
-            customBtn7.Size = new Size(284, 40);
+            customBtn7.Size = new Size(270, 40);
             customBtn7.TabIndex = 8;
-            customBtn7.Text = "customBtn7";
+            customBtn7.Text = "Reports";
             customBtn7.TextColor = Color.White;
             customBtn7.UseVisualStyleBackColor = false;
             // 
@@ -125,11 +125,11 @@ namespace Bus_Sphere.packages
             customBtn6.FlatAppearance.BorderSize = 0;
             customBtn6.FlatStyle = FlatStyle.Flat;
             customBtn6.ForeColor = Color.White;
-            customBtn6.Location = new Point(0, 452);
+            customBtn6.Location = new Point(3, 474);
             customBtn6.Name = "customBtn6";
-            customBtn6.Size = new Size(284, 40);
+            customBtn6.Size = new Size(270, 40);
             customBtn6.TabIndex = 7;
-            customBtn6.Text = "customBtn6";
+            customBtn6.Text = "Routes";
             customBtn6.TextColor = Color.White;
             customBtn6.UseVisualStyleBackColor = false;
             // 
@@ -143,20 +143,20 @@ namespace Bus_Sphere.packages
             customBtn4.FlatAppearance.BorderSize = 0;
             customBtn4.FlatStyle = FlatStyle.Flat;
             customBtn4.ForeColor = Color.White;
-            customBtn4.Location = new Point(0, 406);
+            customBtn4.Location = new Point(3, 382);
             customBtn4.Name = "customBtn4";
-            customBtn4.Size = new Size(284, 40);
+            customBtn4.Size = new Size(270, 40);
             customBtn4.TabIndex = 6;
-            customBtn4.Text = "customBtn4";
+            customBtn4.Text = "bookigns";
             customBtn4.TextColor = Color.White;
             customBtn4.UseVisualStyleBackColor = false;
             // 
             // pictureBox1
             // 
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(0, 0);
+            pictureBox1.Location = new Point(3, 3);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(284, 284);
+            pictureBox1.Size = new Size(264, 269);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 5;
             pictureBox1.TabStop = false;
@@ -164,12 +164,12 @@ namespace Bus_Sphere.packages
             // MainPanel
             // 
             MainPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            MainPanel.BackColor = Color.RosyBrown;
-            MainPanel.BorderStyle = BorderStyle.FixedSingle;
+            MainPanel.BackColor = Color.Transparent;
             MainPanel.Controls.Add(busList1);
-            MainPanel.Location = new Point(290, 0);
+            MainPanel.Dock = DockStyle.Right;
+            MainPanel.Location = new Point(284, 0);
             MainPanel.Name = "MainPanel";
-            MainPanel.Size = new Size(1125, 782);
+            MainPanel.Size = new Size(1170, 814);
             MainPanel.TabIndex = 2;
             MainPanel.Paint += MainPanel_Paint;
             // 
@@ -178,8 +178,9 @@ namespace Bus_Sphere.packages
             busList1.Dock = DockStyle.Fill;
             busList1.Location = new Point(0, 0);
             busList1.Name = "busList1";
-            busList1.Size = new Size(1123, 780);
+            busList1.Size = new Size(1170, 814);
             busList1.TabIndex = 0;
+            busList1.Load += busList1_Load;
             // 
             // MainPage
             // 
@@ -190,10 +191,10 @@ namespace Bus_Sphere.packages
             ClientSize = new Size(1454, 814);
             Controls.Add(MainPanel);
             Controls.Add(MenuPanel);
+            DoubleBuffered = true;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "MainPage";
             Text = "BusSphere";
-            WindowState = FormWindowState.Maximized;
             MenuPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             MainPanel.ResumeLayout(false);
@@ -206,7 +207,6 @@ namespace Bus_Sphere.packages
         private CustomBtn SeeRevenueBtn;
         private CustomBtn customBtn3;
         private CustomBtn customBtn2;
-        private CustomBtn customBtn1;
         private PictureBox pictureBox1;
         private Panel MainPanel;
         private CustomBtn customBtn9;

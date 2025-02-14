@@ -19,8 +19,12 @@ namespace Bus_Sphere.Models
         public string Gender { get; set; }
         public int Age { get; set; }
         public string PaymentMethod { get; set; }
-        public bool IsRoundTrip { get; set; }
-        public string Notes { get; set; }
+
+        public PassengerDetail(string name ,string email,string phone,string address ,string pickup,string drop,string[] seats, string paymentMethod)
+        {
+           
+
+        }
 
         // Method to get booked seats
         public string[] GetBookedSeats()
@@ -36,10 +40,10 @@ namespace Bus_Sphere.Models
 
         // Method to display passenger details
         public override string ToString()
-        {
+        { 
             return $"Name: {Name}, Email: {Email}, Phone: {Phone}, Address: {Address}, " +
                    $"Drop: {Drop}, Pickup: {Pickup}, Date: {Date}, Seats: {string.Join(", ", Seats)}, " +
-                   $"Gender: {Gender}, Age: {Age}, PaymentMethod: {PaymentMethod}, IsRoundTrip: {IsRoundTrip}, Notes: {Notes}";
+                   $"Gender: {Gender}, Age: {Age}, PaymentMethod: {PaymentMethod}";
         }
 
 

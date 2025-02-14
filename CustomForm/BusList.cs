@@ -1,38 +1,46 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
-using Bus_Sphere.packages;
+using Bus_Sphere.CustomControls;
+
 namespace Bus_Sphere.CustomForm
 {
     public partial class BusList : UserControl
     {
         const string connectionString = "server=localhost;user=root;database=bussphere;port=3306;password=";
         private Dictionary<int, Color> originalColors = new Dictionary<int, Color>();
+
         public BusList()
         {
             InitializeComponent();
             LoadBusData();
+            dataGridView1.BackgroundColor = Color.FromArgb(35, 140, 178);
             dataGridView1.EnableHeadersVisualStyles = false;
-            dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = Color.DarkBlue;
+            dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(35, 140, 178);
             dataGridView1.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dataGridView1.ColumnHeadersDefaultCellStyle.Font = new Font("Arial", 10, FontStyle.Bold);
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
+            dataGridView1.ColumnHeadersHeight = 60; // Set header height
             dataGridView1.DefaultCellStyle.BackColor = Color.Beige;
-            dataGridView1.DefaultCellStyle.Font = new Font("Arial", 10);
-            dataGridView1.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray; // Alternate row color
+            dataGridView1.DefaultCellStyle.ForeColor = Color.Black;
+            dataGridView1.DefaultCellStyle.Font = new Font("Arial", 12);
+            dataGridView1.RowTemplate.Height = 150; // Increase row height
+            dataGridView1.GridColor = Color.White; // Set grid line color
+
+            dataGridView1.CellBorderStyle = DataGridViewCellBorderStyle.Single; // Ensure single border style
+            dataGridView1.BorderStyle = BorderStyle.FixedSingle; // Set border style of DataGridView
+            dataGridView1.BackgroundColor = Color.LightGray; // Set background color
 
             dataGridView1.CellMouseEnter += dataGridView1_CellMouseEnter;
             dataGridView1.CellMouseLeave += dataGridView1_CellMouseLeave;
             dataGridView1.CellClick += dataGridView1_CellClick;
             dataGridView1.CellDoubleClick += dataGridView1_CellDoubleClick;
 
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             GoBackbtn.Visible = false;
         }
@@ -44,7 +52,22 @@ namespace Bus_Sphere.CustomForm
                 using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "SELECT * FROM Bus"; // Query to fetch bus data
+                    string query = @"
+                        SELECT 
+                            b.bus_id AS 'Bus ID', 
+                            b.bus_number AS 'Bus Number', 
+                            b.bus_name AS 'Bus Name', 
+                            b.bus_type AS 'Bus Type', 
+                            b.total_seats AS 'Total Seats',
+                            r.departure_location AS 'Start',
+                            r.arrival_location AS 'Destination',
+                            r.departure_time AS 'Departure Time',
+                            r.arrival_time AS 'Reach Time',
+                            r.ticket_price AS 'Ticket Price'
+                        FROM 
+                            bus b
+                        JOIN 
+                            routing r ON b.bus_id = r.bus_id"; // Query to fetch bus data along with routing information and ticket price
                     MySqlDataAdapter adapter = new MySqlDataAdapter(query, conn);
                     DataTable dt = new DataTable();
                     adapter.Fill(dt);
@@ -65,7 +88,7 @@ namespace Bus_Sphere.CustomForm
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-
+            // Handle cell click event if needed
         }
 
         private void dataGridView1_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
@@ -89,6 +112,7 @@ namespace Bus_Sphere.CustomForm
                 dataGridView1.Rows[e.RowIndex].DefaultCellStyle.BackColor = originalColors[e.RowIndex];
             }
         }
+
         public void LoadUserControl(UserControl userControl)
         {
             // Clear existing controls
@@ -98,8 +122,6 @@ namespace Bus_Sphere.CustomForm
             // Add the UserControl to the panel
             userControl.Dock = DockStyle.None;  // Dock to fill the panel
             userControl.BringToFront();
-           
-
             panel2.Controls.Add(userControl);  // Add UserControl to the panel
         }
 
@@ -115,27 +137,29 @@ namespace Bus_Sphere.CustomForm
                 DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
 
                 // Extract data from the selected row
-                string busID = row.Cells["bus_id"].Value.ToString();
-                string busNumber = row.Cells["bus_number"].Value.ToString();
-                string busName = row.Cells["bus_name"].Value.ToString();
-                string busType = row.Cells["bus_type"].Value.ToString();
-                string totalSeats = row.Cells["total_seats"].Value.ToString();
-                string availableSeats = row.Cells["available_seats"].Value.ToString();
+                string busID = row.Cells["Bus ID"].Value.ToString();
+                string busNumber = row.Cells["Bus Number"].Value.ToString();
+                string busName = row.Cells["Bus Name"].Value.ToString();
+                string busType = row.Cells["Bus Type"].Value.ToString();
+                string totalSeats = row.Cells["Total Seats"].Value.ToString();
+                string departureLocation = row.Cells["Start"].Value.ToString();
+                string arrivalLocation = row.Cells["Destination"].Value.ToString();
+                string departureTime = row.Cells["Departure Time"].Value.ToString();
+                string arrivalTime = row.Cells["Reach Time"].Value.ToString();
+                string ticketPrice = row.Cells["Ticket Price"].Value.ToString();
 
                 // Display selected bus details in a MessageBox (or TextBoxes)
-                //MessageBox.Show($"Selected Bus:\nID: {busID}\nNumber: {busNumber}\nName: {busName}\nType: {busType}\nSeats: {availableSeats}/{totalSeats}", "Bus Details");
+                MessageBox.Show($"Selected Bus:\nID: {busID}\nNumber: {busNumber}\nName: {busName}\nType: {busType}\nSeats: {totalSeats}\nDeparture: {departureLocation} at {departureTime}\nArrival: {arrivalLocation} at {arrivalTime}\nTicket Price: {ticketPrice}", "Bus Details");
+
                 GoBackbtn.Visible = true;
                 LoadUserControl(new SeatLayout(busID));
-
-             //   LoadUserControl(new SeatSelection(busID));
-                
             }
         }
 
         private void GoBackbtn_Click(object sender, EventArgs e)
         {
-           this.Controls.Clear();
-           this.Controls.Add(new BusList());
+            this.Controls.Clear();
+            this.Controls.Add(new BusList());
         }
     }
 }

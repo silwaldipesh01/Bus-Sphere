@@ -47,7 +47,7 @@ namespace Bus_Sphere.CustomForm
             panel1.Dock = DockStyle.Fill;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1375, 759);
+            panel1.Size = new Size(1138, 814);
             panel1.TabIndex = 0;
             // 
             // GoBackbtn
@@ -62,7 +62,7 @@ namespace Bus_Sphere.CustomForm
             GoBackbtn.FlatStyle = FlatStyle.Flat;
             GoBackbtn.ForeColor = Color.White;
             GoBackbtn.Image = (Image)resources.GetObject("GoBackbtn.Image");
-            GoBackbtn.Location = new Point(1261, 13);
+            GoBackbtn.Location = new Point(1063, 13);
             GoBackbtn.Name = "GoBackbtn";
             GoBackbtn.Size = new Size(46, 37);
             GoBackbtn.TabIndex = 3;
@@ -76,16 +76,15 @@ namespace Bus_Sphere.CustomForm
             panel2.Dock = DockStyle.Bottom;
             panel2.Location = new Point(0, 56);
             panel2.Name = "panel2";
-            panel2.Size = new Size(1375, 703);
+            panel2.Size = new Size(1138, 758);
             panel2.TabIndex = 2;
             // 
             // dataGridView1
             // 
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Dock = DockStyle.Fill;
             dataGridView1.Location = new Point(0, 0);
             dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(1375, 703);
+            dataGridView1.Size = new Size(1109, 696);
             dataGridView1.TabIndex = 0;
             dataGridView1.CellDoubleClick += dataGridView1_CellDoubleClick;
             // 
@@ -95,7 +94,7 @@ namespace Bus_Sphere.CustomForm
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(panel1);
             Name = "BusList";
-            Size = new Size(1375, 759);
+            Size = new Size(1138, 814);
             panel1.ResumeLayout(false);
             panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
