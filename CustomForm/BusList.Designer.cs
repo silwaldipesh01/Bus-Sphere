@@ -82,9 +82,10 @@ namespace Bus_Sphere.CustomForm
             // dataGridView1
             // 
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(0, 0);
+            dataGridView1.Dock = DockStyle.Bottom;
+            dataGridView1.Location = new Point(0, 3);
             dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(1109, 696);
+            dataGridView1.Size = new Size(1138, 755);
             dataGridView1.TabIndex = 0;
             dataGridView1.CellDoubleClick += dataGridView1_CellDoubleClick;
             // 

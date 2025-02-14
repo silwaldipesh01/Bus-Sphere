@@ -17,7 +17,13 @@ namespace Bus_Sphere.CustomForm
         public BusList()
         {
             InitializeComponent();
+            InitializeDataGridView();
             LoadBusData();
+        }
+
+        private void InitializeDataGridView()
+        {
+            dataGridView1.Dock = DockStyle.Fill; // Ensure DataGridView fills the UserControl
             dataGridView1.BackgroundColor = Color.FromArgb(35, 140, 178);
             dataGridView1.EnableHeadersVisualStyles = false;
             dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(35, 140, 178);
@@ -28,21 +34,18 @@ namespace Bus_Sphere.CustomForm
             dataGridView1.DefaultCellStyle.BackColor = Color.Beige;
             dataGridView1.DefaultCellStyle.ForeColor = Color.Black;
             dataGridView1.DefaultCellStyle.Font = new Font("Arial", 12);
-            dataGridView1.RowTemplate.Height = 150; // Increase row height
+            dataGridView1.RowTemplate.Height = 100; // Increase row height
             dataGridView1.GridColor = Color.White; // Set grid line color
-
             dataGridView1.CellBorderStyle = DataGridViewCellBorderStyle.Single; // Ensure single border style
             dataGridView1.BorderStyle = BorderStyle.FixedSingle; // Set border style of DataGridView
             dataGridView1.BackgroundColor = Color.LightGray; // Set background color
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
 
             dataGridView1.CellMouseEnter += dataGridView1_CellMouseEnter;
             dataGridView1.CellMouseLeave += dataGridView1_CellMouseLeave;
             dataGridView1.CellClick += dataGridView1_CellClick;
             dataGridView1.CellDoubleClick += dataGridView1_CellDoubleClick;
-
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-            dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            GoBackbtn.Visible = false;
         }
 
         private void LoadBusData()
@@ -63,7 +66,9 @@ namespace Bus_Sphere.CustomForm
                             r.arrival_location AS 'Destination',
                             r.departure_time AS 'Departure Time',
                             r.arrival_time AS 'Reach Time',
-                            r.ticket_price AS 'Ticket Price'
+                            r.ticket_price AS 'Ticket Price',
+                            r.through_location AS 'Through'
+
                         FROM 
                             bus b
                         JOIN 
@@ -78,12 +83,23 @@ namespace Bus_Sphere.CustomForm
                     {
                         originalColors[i] = dataGridView1.Rows[i].DefaultCellStyle.BackColor;
                     }
+
+                    // Adjust the height of the DataGridView dynamically
+                    AdjustDataGridViewHeight();
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error: " + ex.Message);
             }
+        }
+
+        private void AdjustDataGridViewHeight()
+        {
+            int totalRowHeight = dataGridView1.Rows.Cast<DataGridViewRow>().Sum(row => row.Height);
+            int headerHeight = dataGridView1.ColumnHeadersHeight;
+            int totalHeight = totalRowHeight + headerHeight + dataGridView1.Margin.Vertical;
+            dataGridView1.Height = totalHeight;
         }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -143,6 +159,7 @@ namespace Bus_Sphere.CustomForm
                 string busType = row.Cells["Bus Type"].Value.ToString();
                 string totalSeats = row.Cells["Total Seats"].Value.ToString();
                 string departureLocation = row.Cells["Start"].Value.ToString();
+                string throughLocation = row.Cells["Through"].Value.ToString();
                 string arrivalLocation = row.Cells["Destination"].Value.ToString();
                 string departureTime = row.Cells["Departure Time"].Value.ToString();
                 string arrivalTime = row.Cells["Reach Time"].Value.ToString();

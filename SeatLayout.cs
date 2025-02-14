@@ -1,14 +1,23 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
 using System.Drawing;
-using System.IO;
+using Bus_Sphere.Models;
 using Bus_Sphere.CustomControls;
 
+
+using System.Net.Mail;
+using System.Threading.Tasks;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System.IO;
+using System.Net;
 using static Bus_Sphere.CustomForm.SeatSelection;
+using Rectangle = iTextSharp.text.Rectangle;
+using Font = iTextSharp.text.Font;
 
 namespace Bus_Sphere.CustomForm
 {
@@ -19,17 +28,95 @@ namespace Bus_Sphere.CustomForm
 
         public string BusId { get; set; }
         private List<Seat> seats = new List<Seat>();
+       public PassengerDetail passengerDetail = new();
 
         public SeatLayout(string busId)
         {
             InitializeComponent();
             BusId = busId;
             LoadSeatData();
+            LoadRoutingData();
         }
 
-        /// <summary>
-        /// Loads seat information from the database and populates the local list of seats.
-        /// </summary>
+        private void LoadRoutingData()
+        {
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = @"
+                        SELECT 
+                            r.route_id,
+                            r.bus_id,
+                            r.departure_location,
+                            r.arrival_location,
+                            r.departure_time,
+                            r.arrival_time,
+                            r.ticket_price,
+                            r.through_location,
+                            b.bus_name,
+                            b.bus_type,
+                            b.bus_number
+                        FROM 
+                            routing r
+                        JOIN 
+                            bus b ON r.bus_id = b.bus_id
+                        WHERE 
+                            r.bus_id = @BusId";
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@BusId", BusId);
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                string routeId = reader["route_id"]?.ToString()?.Trim() ?? "";
+                                string busId = reader["bus_id"]?.ToString()?.Trim() ?? "";
+                                string departureLocation = reader["departure_location"]?.ToString()?.Trim() ?? "";
+                                string arrivalLocation = reader["arrival_location"]?.ToString()?.Trim() ?? "";
+                                string departureTime = reader["departure_time"]?.ToString()?.Trim() ?? "";
+                                string arrivalTime = reader["arrival_time"]?.ToString()?.Trim() ?? "";
+                                string ticketPrice = reader["ticket_price"]?.ToString()?.Trim() ?? "";
+                                string throughLocation = reader["through_location"]?.ToString()?.Trim() ?? "";
+                                string busName = reader["bus_name"]?.ToString()?.Trim() ?? "";
+                                string busType = reader["bus_type"]?.ToString()?.Trim() ?? "";
+                                string busNumber = reader["bus_number"]?.ToString()?.Trim() ?? "";
+
+                                RoutingInfoLbl.Text = $"Route ID: {routeId}\n" +
+                                    $"Bus ID: {busId}\n" +
+                                    $"Bus Name: {busName}\n" +
+                                    $"Bus Type: {busType}\n" +
+                                    $"Departure: {departureLocation}\n" +
+                                    $"Through: {throughLocation}\n" +
+                                    $"Arrival: {arrivalLocation}\n" +
+                                    $"Departure Time: {departureTime}\n" +
+                                    $"Arrival Time: {arrivalTime}\n" +
+                                    $"Ticket Price: {ticketPrice}" + "\n" +
+                                    $"Bus Number: {busNumber}";
+                                
+                                passengerDetail.BusNo = busNumber;
+                                passengerDetail.BusName = busName;
+                                passengerDetail.BusType = busType;
+                                passengerDetail.Source = departureLocation;
+                                passengerDetail.Destination = arrivalLocation;
+                                passengerDetail.Through = throughLocation;
+                                passengerDetail.Date = DateTime.Now.ToString();
+                                passengerDetail.ArrivalTime = arrivalTime;
+                                passengerDetail.DepartureTime = departureTime;
+                                passengerDetail.TicketPrice = Convert.ToDecimal(ticketPrice);
+
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error loading routing data: " + ex.Message);
+            }
+        }
+
         private void LoadSeatData()
         {
             try
@@ -70,9 +157,6 @@ namespace Bus_Sphere.CustomForm
             }
         }
 
-        /// <summary>
-        /// Updates the visual display of seat buttons based on their current status.
-        /// </summary>
         private void UpdateSeatDisplay()
         {
             foreach (var seat in seats)
@@ -91,30 +175,23 @@ namespace Bus_Sphere.CustomForm
 
         private void btnConfirm_Click(object sender, EventArgs e)
         {
-            // 1. Validate user input (name, phone, email).
             if (!ValidateInputs())
                 return;
 
-            // 2. Apply seat booking logic if user inputs are valid.
             CheckAndBookSeats();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            // 1. Validate seat input for cancellation.
             if (string.IsNullOrWhiteSpace(CancelSeatTxtBox.Text))
             {
                 MessageBox.Show("Please enter a seat number to cancel.");
                 return;
             }
 
-            // 2. Apply seat cancellation logic.
             CancelSeats();
         }
 
-        /// <summary>
-        /// Verifies name, phone, and email fields.
-        /// </summary>
         private bool ValidateInputs()
         {
             if (string.IsNullOrWhiteSpace(nameTxt.Text) || !IsValidName(nameTxt.Text))
@@ -135,9 +212,6 @@ namespace Bus_Sphere.CustomForm
             return true;
         }
 
-        /// <summary>
-        /// Splits the seat selection input, checks each seat's availability, then books them if available.
-        /// </summary>
         private void CheckAndBookSeats()
         {
             if (string.IsNullOrWhiteSpace(seatLbl.Text))
@@ -146,27 +220,23 @@ namespace Bus_Sphere.CustomForm
                 return;
             }
 
-            // Split comma-separated seat inputs
             string[] selectedSeats = seatsTxtBx.Text
                 .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                 .Select(x => x.Trim())
                 .ToArray();
-
+           
             if (selectedSeats.Length > 5)
             {
                 MessageBox.Show("You can book up to 5 seats at a time.");
                 return;
             }
 
-            // Identify seats that are unavailable or not found
             List<string> invalidOrUnavailable = new List<string>();
             foreach (string seatNo in selectedSeats)
             {
-                // Find the seat in the local seat list
                 var seatObj = seats.FirstOrDefault(s =>
                     s.SeatNumber.Equals(seatNo, StringComparison.OrdinalIgnoreCase));
 
-                // If seat does not exist, or is not 'Available', treat as unavailable
                 if (seatObj == null || !IsSeatCurrentlyAvailable(seatObj))
                 {
                     invalidOrUnavailable.Add(seatNo);
@@ -180,25 +250,22 @@ namespace Bus_Sphere.CustomForm
                 seatsTxtBx.Text = "";
                 return;
             }
+            passengerDetail.Seats = seatsTxtBx.Text;
+            passengerDetail.Email = emailTxt.Text;
+            passengerDetail.noOfSeats = selectedSeats.Length;
+            passengerDetail.Address = addressTxtBx.Text;
+            passengerDetail.Name = nameTxt.Text;
+            passengerDetail.PhoneNumber = phoneTxt.Text;
 
-            // If all seats are good, proceed to book them
             PerformBooking(selectedSeats);
         }
 
-        /// <summary>
-        /// Checks if a seat is marked "Available" in local memory.
-        /// Additional checks or real-time re-queries could be added here if desired.
-        /// </summary>
         private bool IsSeatCurrentlyAvailable(Seat seatObj)
         {
             return seatObj.Status == Seat.BookingStatus.Available;
         }
 
-        /// <summary>
-        /// Inserts bookings into the database, updates the seat statuses,
-        /// and refreshes the seat display.
-        /// </summary>
-        private void PerformBooking(string[] seatNumbers)
+        private async void PerformBooking(string[] seatNumbers)
         {
             try
             {
@@ -206,12 +273,11 @@ namespace Bus_Sphere.CustomForm
                 {
                     conn.Open();
 
-                    // Insert or get passenger ID
                     int passengerId = InsertOrGetPassengerId(nameTxt.Text.Trim(), phoneTxt.Text.Trim(), emailTxt.Text.Trim());
+                    passengerDetail.Id = passengerId;
 
                     foreach (string seatNo in seatNumbers)
                     {
-                        // Insert new booking record
                         string insertQuery = @"
                             INSERT INTO bookings (passenger_id, seatNo, bus_id)
                             VALUES (@passenger_id, @seatNo, @bus_id)";
@@ -224,7 +290,6 @@ namespace Bus_Sphere.CustomForm
                             cmd.ExecuteNonQuery();
                         }
 
-                        // Update seat table to reflect the new 'Booked' status
                         string updateSeatQuery = @"
                             UPDATE seats
                             SET Status = 'Booked'
@@ -237,7 +302,6 @@ namespace Bus_Sphere.CustomForm
                             updateCmd.ExecuteNonQuery();
                         }
 
-                        // Update local seat object as well
                         var seatObj = seats.FirstOrDefault(s =>
                             s.SeatNumber.Equals(seatNo, StringComparison.OrdinalIgnoreCase));
                         if (seatObj != null)
@@ -247,6 +311,8 @@ namespace Bus_Sphere.CustomForm
                     }
 
                     MessageBox.Show("Booking successful!");
+
+                   await  SendEmailAsync(passengerDetail);
                     ResetBookingForm();
                     UpdateSeatDisplay();
                 }
@@ -257,9 +323,6 @@ namespace Bus_Sphere.CustomForm
             }
         }
 
-        /// <summary>
-        /// Cancels the seats specified in the CancelSeatTxtBox.
-        /// </summary>
         private void CancelSeats()
         {
             try
@@ -268,7 +331,6 @@ namespace Bus_Sphere.CustomForm
                 {
                     conn.Open();
 
-                    // Split comma-separated seat inputs
                     string[] seatsToCancel = CancelSeatTxtBox.Text
                         .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                         .Select(x => x.Trim())
@@ -279,7 +341,6 @@ namespace Bus_Sphere.CustomForm
 
                     foreach (string seatNo in seatsToCancel)
                     {
-                        // Find the seat in the local seat list
                         var seatObj = seats.FirstOrDefault(s =>
                             s.SeatNumber.Equals(seatNo, StringComparison.OrdinalIgnoreCase));
 
@@ -289,7 +350,6 @@ namespace Bus_Sphere.CustomForm
                             continue;
                         }
 
-                        // Update seat table to reflect the new 'Available' status
                         string updateSeatQuery = @"
                             UPDATE seats
                             SET Status = 'Available'
@@ -302,7 +362,6 @@ namespace Bus_Sphere.CustomForm
                             updateCmd.ExecuteNonQuery();
                         }
 
-                        // Remove booking record
                         string deleteBookingQuery = @"
                             DELETE FROM bookings
                             WHERE bus_id = @bus_id AND seatNo = @seatNo";
@@ -314,7 +373,6 @@ namespace Bus_Sphere.CustomForm
                             deleteCmd.ExecuteNonQuery();
                         }
 
-                        // Update local seat object as well
                         if (seatObj != null)
                         {
                             seatObj.Status = Seat.BookingStatus.Available;
@@ -344,10 +402,6 @@ namespace Bus_Sphere.CustomForm
             }
         }
 
-        /// <summary>
-        /// Inserts a new passenger or retrieves the ID of an existing passenger
-        /// based on phone and email.
-        /// </summary>
         private int InsertOrGetPassengerId(string name, string phone, string email)
         {
             int passengerId = 0;
@@ -355,7 +409,6 @@ namespace Bus_Sphere.CustomForm
             {
                 conn.Open();
 
-                // Check if the passenger already exists
                 string selectQuery = @"
                     SELECT passenger_id 
                     FROM passengers 
@@ -374,7 +427,6 @@ namespace Bus_Sphere.CustomForm
                     }
                 }
 
-                // If passenger not found, insert a new record
                 string insertQuery = @"
                     INSERT INTO passengers (name, phone, email)
                     VALUES (@name, @phone, @email);
@@ -452,14 +504,12 @@ namespace Bus_Sphere.CustomForm
 
         private void CancelBtn_Click_1(object sender, EventArgs e)
         {
-            // 1. Validate seat input for cancellation.
             if (string.IsNullOrWhiteSpace(CancelSeatTxtBox.Text))
             {
                 MessageBox.Show("Please enter a seat number to cancel.");
                 return;
             }
 
-            // 2. Apply seat cancellation logic.
             CancelSeats();
         }
 
@@ -467,5 +517,148 @@ namespace Bus_Sphere.CustomForm
         {
 
         }
+        static async Task SendEmailAsync(PassengerDetail passengerDetail)
+        {
+            MailMessage mail = new MailMessage();
+            mail.From = new MailAddress("esp32alertdipesh@gmail.com");
+            mail.To.Add(passengerDetail.Email);
+            mail.Subject = "Ticket Confirmation for " + passengerDetail.Name;
+            mail.Body = "Dear " + passengerDetail.Name + ",\n\nPlease find attached your ticket.\n\nBest regards,\nBus Sphere";
+
+            string ticketPath = CreateTicket(passengerDetail);
+            Attachment attachment = new Attachment(ticketPath);
+            mail.Attachments.Add(attachment);
+
+            try
+            {
+                SmtpClient smtpClient = new SmtpClient();
+                smtpClient.Host = "smtp.gmail.com";
+                smtpClient.Port = 587;
+                smtpClient.UseDefaultCredentials = false;
+                smtpClient.Credentials = new NetworkCredential("esp32alertdipesh@gmail.com", "nouv lwqe ohkg menh");
+                smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+                smtpClient.EnableSsl = true;
+                await smtpClient.SendMailAsync(mail);
+                MessageBox.Show("Email sent successfully to " + passengerDetail.Email);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error sending email: " + ex.Message);
+            }
+        }
+
+        static string CreateTicket(PassengerDetail passengerDetail)
+        {
+            string outputPath = $"C:\\Users\\silwa\\source\\repos\\pdfGeneration\\ticket_{passengerDetail.Id}.pdf";
+
+            Document doc = new Document();
+            PdfWriter writer = PdfWriter.GetInstance(doc, new FileStream(outputPath, FileMode.Create));
+            writer.PageEvent = new PdfPageEvents();
+
+            try
+            {
+                doc.Open();
+                doc.Add(new Paragraph("\n\n\n\n\n\n"));
+
+                Font titleFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 20);
+                Font regularFont = FontFactory.GetFont(FontFactory.HELVETICA, 12);
+
+                doc.Add(new Paragraph("Bus Sphere Ticket", titleFont) { Alignment = Element.ALIGN_CENTER });
+                doc.Add(new Paragraph(" "));
+
+                PdfPTable table = new PdfPTable(2);
+                table.WidthPercentage = 100;
+                table.SetWidths(new float[] { 1, 2 });
+
+                table.AddCell(new PdfPCell(new Phrase("Passenger Name:", regularFont)) { Border = Rectangle.NO_BORDER });
+                table.AddCell(new PdfPCell(new Phrase(passengerDetail.Name, regularFont)) { Border = Rectangle.NO_BORDER });
+
+                table.AddCell(new PdfPCell(new Phrase("Passenger Email:", regularFont)) { Border = Rectangle.NO_BORDER });
+                table.AddCell(new PdfPCell(new Phrase(passengerDetail.Email, regularFont)) { Border = Rectangle.NO_BORDER });
+
+                table.AddCell(new PdfPCell(new Phrase("Phone Number:", regularFont)) { Border = Rectangle.NO_BORDER });
+                table.AddCell(new PdfPCell(new Phrase(passengerDetail.PhoneNumber, regularFont)) { Border = Rectangle.NO_BORDER });
+
+                table.AddCell(new PdfPCell(new Phrase("Address:", regularFont)) { Border = Rectangle.NO_BORDER });
+                table.AddCell(new PdfPCell(new Phrase(passengerDetail.Address, regularFont)) { Border = Rectangle.NO_BORDER });
+
+                table.AddCell(new PdfPCell(new Phrase("Bus Number:", regularFont)) { Border = Rectangle.NO_BORDER });
+                table.AddCell(new PdfPCell(new Phrase(passengerDetail.BusNo, regularFont)) { Border = Rectangle.NO_BORDER });
+
+                table.AddCell(new PdfPCell(new Phrase("Bus Name:", regularFont)) { Border = Rectangle.NO_BORDER });
+                table.AddCell(new PdfPCell(new Phrase(passengerDetail.BusName, regularFont)) { Border = Rectangle.NO_BORDER });
+
+                table.AddCell(new PdfPCell(new Phrase("Bus Type:", regularFont)) { Border = Rectangle.NO_BORDER });
+                table.AddCell(new PdfPCell(new Phrase(passengerDetail.BusType, regularFont)) { Border = Rectangle.NO_BORDER });
+
+                table.AddCell(new PdfPCell(new Phrase("Seat Numbers:", regularFont)) { Border = Rectangle.NO_BORDER });
+                table.AddCell(new PdfPCell(new Phrase(string.Join(", ", passengerDetail.Seats), regularFont)) { Border = Rectangle.NO_BORDER });
+
+                table.AddCell(new PdfPCell(new Phrase("Departure Date:", regularFont)) { Border = Rectangle.NO_BORDER });
+                table.AddCell(new PdfPCell(new Phrase(passengerDetail.Date, regularFont)) { Border = Rectangle.NO_BORDER });
+
+                table.AddCell(new PdfPCell(new Phrase("Departure Time:", regularFont)) { Border = Rectangle.NO_BORDER });
+                table.AddCell(new PdfPCell(new Phrase(passengerDetail.DepartureTime, regularFont)) { Border = Rectangle.NO_BORDER });
+
+                table.AddCell(new PdfPCell(new Phrase("Departure Location:", regularFont)) { Border = Rectangle.NO_BORDER });
+                table.AddCell(new PdfPCell(new Phrase(passengerDetail.Source, regularFont)) { Border = Rectangle.NO_BORDER });
+
+                table.AddCell(new PdfPCell(new Phrase("Arrival Time:", regularFont)) { Border = Rectangle.NO_BORDER });
+                table.AddCell(new PdfPCell(new Phrase(passengerDetail.ArrivalTime, regularFont)) { Border = Rectangle.NO_BORDER });
+
+                table.AddCell(new PdfPCell(new Phrase("Arrival Location:", regularFont)) { Border = Rectangle.NO_BORDER });
+                table.AddCell(new PdfPCell(new Phrase(passengerDetail.Destination, regularFont)) { Border = Rectangle.NO_BORDER });
+
+                table.AddCell(new PdfPCell(new Phrase("Ticket Price:", regularFont)) { Border = Rectangle.NO_BORDER });
+                string ticketPrice = Convert.ToInt32(passengerDetail.TicketPrice).ToString();
+                table.AddCell(new PdfPCell(new Phrase(ticketPrice, regularFont)) { Border = Rectangle.NO_BORDER });
+
+                table.AddCell(new PdfPCell(new Phrase("Total Price  :", regularFont)) { Border = Rectangle.NO_BORDER });
+                string total = (Convert.ToInt32(passengerDetail.TicketPrice) * passengerDetail.Seats.Length).ToString();
+                table.AddCell(new PdfPCell(new Phrase(total, regularFont)) { Border = Rectangle.NO_BORDER });
+
+
+
+
+                doc.Add(table);
+
+                doc.Add(new Paragraph("\n\n"));
+                doc.Add(new Paragraph("Thank you for choosing Bus Sphere. We wish you a pleasant journey!", regularFont) { Alignment = Element.ALIGN_CENTER });
+
+                doc.Close();
+                MessageBox.Show("PDF created successfully at " + outputPath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error : "+ ex);
+            }
+
+            return outputPath;
+        }
+
+        public class PdfPageEvents : PdfPageEventHelper
+        {
+            public override void OnEndPage(PdfWriter writer, Document document)
+            {
+                PdfPTable headerTable = new PdfPTable(1);
+                headerTable.TotalWidth = document.PageSize.Width - document.LeftMargin - document.RightMargin;
+
+                headerTable.HorizontalAlignment = Element.ALIGN_CENTER;
+                string imagePath = "C:\\Users\\silwa\\source\\repos\\Bus Sphere\\Images\\busLogo.png";
+                iTextSharp.text.Image image = iTextSharp.text.Image.GetInstance(imagePath);
+                image.ScaleToFit(474f, 87f);
+                PdfPCell imageCell = new PdfPCell(image);
+                imageCell.Border = Rectangle.NO_BORDER;
+                imageCell.HorizontalAlignment = Element.ALIGN_CENTER;
+                headerTable.AddCell(imageCell);
+
+                Font font = FontFactory.GetFont(FontFactory.HELVETICA, 44, BaseColor.BLACK);
+                PdfPCell headerCell = new PdfPCell(new Phrase("Bus Sphere", font));
+                headerCell.Border = Rectangle.NO_BORDER;
+                headerCell.HorizontalAlignment = Element.ALIGN_CENTER;
+                headerTable.WriteSelectedRows(0, -1, document.LeftMargin, document.PageSize.Height - 15, writer.DirectContent);
+            }
+        }
+
     }
 }

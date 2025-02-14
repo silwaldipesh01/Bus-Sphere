@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using Bus_Sphere.CustomControls;
 using MySql.Data.MySqlClient;
@@ -92,7 +93,6 @@ namespace Bus_Sphere.CustomForm
             Seat selectedSeat = (Seat)clickedButton.Tag;
             try
             {
-
                 if (selectedSeat.Status == Seat.BookingStatus.Available)
                 {
                     selectedSeat.Status = Seat.BookingStatus.Booked;
@@ -105,11 +105,10 @@ namespace Bus_Sphere.CustomForm
                     MessageBox.Show($"Seat {selectedSeat.SeatNumber} is already {selectedSeat.Status}!");
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show("Error " + ex);
             }
-
         }
 
         private void UpdateSeatInDatabase(Seat seat, string busId)

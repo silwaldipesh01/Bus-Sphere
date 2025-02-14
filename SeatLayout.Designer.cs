@@ -63,10 +63,13 @@
             customBtn1 = new CustomControls.CustomBtn();
             pictureBox1 = new PictureBox();
             panel2 = new Panel();
+            RoutingInfoLbl = new Label();
             CancelBtn = new CustomControls.CustomBtn();
             CancelSeatTxtBox = new TextBox();
             label4 = new Label();
             panel3 = new Panel();
+            label5 = new Label();
+            checkBox1 = new CheckBox();
             label6 = new Label();
             seatLbl = new Label();
             addressTxt = new Label();
@@ -121,9 +124,9 @@
             panel1.Controls.Add(customBtn1);
             panel1.Controls.Add(pictureBox1);
             panel1.Dock = DockStyle.Right;
-            panel1.Location = new Point(714, 0);
+            panel1.Location = new Point(726, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(424, 758);
+            panel1.Size = new Size(412, 758);
             panel1.TabIndex = 0;
             // 
             // customBtn31
@@ -760,6 +763,7 @@
             // panel2
             // 
             panel2.BackColor = Color.Pink;
+            panel2.Controls.Add(RoutingInfoLbl);
             panel2.Controls.Add(CancelBtn);
             panel2.Controls.Add(CancelSeatTxtBox);
             panel2.Controls.Add(label4);
@@ -767,9 +771,18 @@
             panel2.Dock = DockStyle.Left;
             panel2.Location = new Point(0, 0);
             panel2.Name = "panel2";
-            panel2.Size = new Size(717, 758);
+            panel2.Size = new Size(720, 758);
             panel2.TabIndex = 1;
             panel2.Paint += panel2_Paint;
+            // 
+            // RoutingInfoLbl
+            // 
+            RoutingInfoLbl.AutoSize = true;
+            RoutingInfoLbl.Location = new Point(81, 21);
+            RoutingInfoLbl.Name = "RoutingInfoLbl";
+            RoutingInfoLbl.Size = new Size(38, 15);
+            RoutingInfoLbl.TabIndex = 7;
+            RoutingInfoLbl.Text = "label7";
             // 
             // CancelBtn
             // 
@@ -814,6 +827,8 @@
             // 
             panel3.Anchor = AnchorStyles.None;
             panel3.BackColor = Color.FromArgb(0, 192, 192);
+            panel3.Controls.Add(label5);
+            panel3.Controls.Add(checkBox1);
             panel3.Controls.Add(label6);
             panel3.Controls.Add(seatLbl);
             panel3.Controls.Add(addressTxt);
@@ -826,18 +841,39 @@
             panel3.Controls.Add(emailTxt);
             panel3.Controls.Add(phoneTxt);
             panel3.Controls.Add(nameTxt);
-            panel3.Location = new Point(46, 174);
+            panel3.Location = new Point(39, 179);
             panel3.Name = "panel3";
-            panel3.Size = new Size(627, 435);
+            panel3.Size = new Size(627, 458);
             panel3.TabIndex = 1;
             panel3.Paint += panel3_Paint;
+            // 
+            // label5
+            // 
+            label5.Anchor = AnchorStyles.None;
+            label5.AutoSize = true;
+            label5.Font = new Font("Segoe UI", 12F);
+            label5.Location = new Point(109, 269);
+            label5.Name = "label5";
+            label5.Size = new Size(94, 21);
+            label5.TabIndex = 13;
+            label5.Text = "Enter Seats :";
+            // 
+            // checkBox1
+            // 
+            checkBox1.AutoSize = true;
+            checkBox1.Location = new Point(237, 273);
+            checkBox1.Name = "checkBox1";
+            checkBox1.Size = new Size(82, 19);
+            checkBox1.TabIndex = 12;
+            checkBox1.Text = "checkBox1";
+            checkBox1.UseVisualStyleBackColor = true;
             // 
             // label6
             // 
             label6.Anchor = AnchorStyles.None;
             label6.AutoSize = true;
             label6.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label6.Location = new Point(194, 52);
+            label6.Location = new Point(182, 26);
             label6.Name = "label6";
             label6.Size = new Size(228, 30);
             label6.TabIndex = 11;
@@ -848,7 +884,7 @@
             seatLbl.Anchor = AnchorStyles.None;
             seatLbl.AutoSize = true;
             seatLbl.Font = new Font("Segoe UI", 12F);
-            seatLbl.Location = new Point(18, 288);
+            seatLbl.Location = new Point(-1, 211);
             seatLbl.Name = "seatLbl";
             seatLbl.Size = new Size(94, 21);
             seatLbl.TabIndex = 10;
@@ -859,7 +895,7 @@
             addressTxt.Anchor = AnchorStyles.None;
             addressTxt.AutoSize = true;
             addressTxt.Font = new Font("Segoe UI", 12F);
-            addressTxt.Location = new Point(362, 224);
+            addressTxt.Location = new Point(343, 147);
             addressTxt.Name = "addressTxt";
             addressTxt.Size = new Size(73, 21);
             addressTxt.TabIndex = 9;
@@ -870,7 +906,7 @@
             label3.Anchor = AnchorStyles.None;
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 12F);
-            label3.Location = new Point(374, 162);
+            label3.Location = new Point(355, 85);
             label3.Name = "label3";
             label3.Size = new Size(61, 21);
             label3.TabIndex = 8;
@@ -881,7 +917,7 @@
             label2.Anchor = AnchorStyles.None;
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 12F);
-            label2.Location = new Point(53, 224);
+            label2.Location = new Point(34, 147);
             label2.Name = "label2";
             label2.Size = new Size(55, 21);
             label2.TabIndex = 7;
@@ -892,7 +928,7 @@
             label1.Anchor = AnchorStyles.None;
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 12F);
-            label1.Location = new Point(53, 162);
+            label1.Location = new Point(34, 85);
             label1.Name = "label1";
             label1.Size = new Size(59, 21);
             label1.TabIndex = 6;
@@ -909,7 +945,7 @@
             btnConfirm.FlatAppearance.BorderSize = 0;
             btnConfirm.FlatStyle = FlatStyle.Flat;
             btnConfirm.ForeColor = Color.White;
-            btnConfirm.Location = new Point(249, 351);
+            btnConfirm.Location = new Point(237, 325);
             btnConfirm.Name = "btnConfirm";
             btnConfirm.Size = new Size(150, 40);
             btnConfirm.TabIndex = 5;
@@ -922,7 +958,7 @@
             // 
             seatsTxtBx.Anchor = AnchorStyles.None;
             seatsTxtBx.Font = new Font("Segoe UI", 12F);
-            seatsTxtBx.Location = new Point(128, 285);
+            seatsTxtBx.Location = new Point(109, 208);
             seatsTxtBx.Name = "seatsTxtBx";
             seatsTxtBx.Size = new Size(155, 29);
             seatsTxtBx.TabIndex = 4;
@@ -931,7 +967,7 @@
             // 
             addressTxtBx.Anchor = AnchorStyles.None;
             addressTxtBx.Font = new Font("Segoe UI", 12F);
-            addressTxtBx.Location = new Point(445, 221);
+            addressTxtBx.Location = new Point(426, 144);
             addressTxtBx.Name = "addressTxtBx";
             addressTxtBx.Size = new Size(155, 29);
             addressTxtBx.TabIndex = 3;
@@ -940,7 +976,7 @@
             // 
             emailTxt.Anchor = AnchorStyles.None;
             emailTxt.Font = new Font("Segoe UI", 12F);
-            emailTxt.Location = new Point(128, 221);
+            emailTxt.Location = new Point(109, 144);
             emailTxt.Name = "emailTxt";
             emailTxt.Size = new Size(155, 29);
             emailTxt.TabIndex = 2;
@@ -949,7 +985,7 @@
             // 
             phoneTxt.Anchor = AnchorStyles.None;
             phoneTxt.Font = new Font("Segoe UI", 12F);
-            phoneTxt.Location = new Point(445, 159);
+            phoneTxt.Location = new Point(426, 82);
             phoneTxt.Name = "phoneTxt";
             phoneTxt.Size = new Size(155, 29);
             phoneTxt.TabIndex = 1;
@@ -958,7 +994,7 @@
             // 
             nameTxt.Anchor = AnchorStyles.None;
             nameTxt.Font = new Font("Segoe UI", 12F);
-            nameTxt.Location = new Point(128, 159);
+            nameTxt.Location = new Point(109, 82);
             nameTxt.Name = "nameTxt";
             nameTxt.Size = new Size(155, 29);
             nameTxt.TabIndex = 0;
@@ -1032,5 +1068,8 @@
         private Label label4;
         private TextBox CancelSeatTxtBox;
         private CustomControls.CustomBtn CancelBtn;
+        private Label label5;
+        private CheckBox checkBox1;
+        private Label RoutingInfoLbl;
     }
 }

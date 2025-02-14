@@ -194,6 +194,7 @@ namespace Bus_Sphere.packages
             DoubleBuffered = true;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "MainPage";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "BusSphere";
             MenuPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
