@@ -12,19 +12,21 @@ namespace Bus_Sphere.CustomForm
     public partial class BusList : UserControl
     {
         const string connectionString = "server=localhost;user=root;database=bussphere;port=3306;password=";
-        private Dictionary<int, Color> originalColors = new Dictionary<int, Color>();
+        private readonly Dictionary<int, Color> originalColors = new Dictionary<int, Color>();
 
         public BusList()
         {
             InitializeComponent();
             InitializeDataGridView();
             LoadBusData();
+            GoBackbtn.Visible = false;
         }
 
         private void InitializeDataGridView()
         {
             dataGridView1.Dock = DockStyle.Fill; // Ensure DataGridView fills the UserControl
-            dataGridView1.BackgroundColor = Color.FromArgb(35, 140, 178);
+            dataGridView1.BackgroundColor = Color.Beige;
+            dataGridView1.ForeColor = Color.White;
             dataGridView1.EnableHeadersVisualStyles = false;
             dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(35, 140, 178);
             dataGridView1.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
@@ -34,18 +36,19 @@ namespace Bus_Sphere.CustomForm
             dataGridView1.DefaultCellStyle.BackColor = Color.Beige;
             dataGridView1.DefaultCellStyle.ForeColor = Color.Black;
             dataGridView1.DefaultCellStyle.Font = new Font("Arial", 12);
-            dataGridView1.RowTemplate.Height = 100; // Increase row height
+            dataGridView1.RowTemplate.Height = 60; // Set row height
             dataGridView1.GridColor = Color.White; // Set grid line color
             dataGridView1.CellBorderStyle = DataGridViewCellBorderStyle.Single; // Ensure single border style
             dataGridView1.BorderStyle = BorderStyle.FixedSingle; // Set border style of DataGridView
-            dataGridView1.BackgroundColor = Color.LightGray; // Set background color
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+          //  dataGridView1.BackgroundColor = Color.LightGray; // Set background color
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells; // Set columns to auto-size mode based on content
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
 
             dataGridView1.CellMouseEnter += dataGridView1_CellMouseEnter;
             dataGridView1.CellMouseLeave += dataGridView1_CellMouseLeave;
             dataGridView1.CellClick += dataGridView1_CellClick;
             dataGridView1.CellDoubleClick += dataGridView1_CellDoubleClick;
+            dataGridView1.DataError += DataGridView1_DataError; // Subscribe to the DataError event
         }
 
         private void LoadBusData()
@@ -61,22 +64,63 @@ namespace Bus_Sphere.CustomForm
                             b.bus_number AS 'Bus Number', 
                             b.bus_name AS 'Bus Name', 
                             b.bus_type AS 'Bus Type', 
-                            b.total_seats AS 'Total Seats',
-                            r.departure_location AS 'Start',
-                            r.arrival_location AS 'Destination',
-                            r.departure_time AS 'Departure Time',
-                            r.arrival_time AS 'Reach Time',
-                            r.ticket_price AS 'Ticket Price',
-                            r.through_location AS 'Through'
-
+                            CONCAT(COALESCE(b.total_seats, '0'), ' / ', 
+                                COALESCE((SELECT COUNT(*) 
+                                FROM seats s 
+                                WHERE s.bus_id = b.bus_id 
+                                  AND s.Status = 'Available'), 0)) AS 'Seats (Total / Available)',
+                            CONCAT(COALESCE(r.departure_location, ''), ' - ', COALESCE(r.through_location, ''), ' - ', COALESCE(r.arrival_location, '')) AS 'Route',
+                            TIME_FORMAT(COALESCE(r.departure_time, '00:00:00'), '%H:%i') AS 'Departure Time',
+                            TIME_FORMAT(COALESCE(r.arrival_time, '00:00:00'), '%H:%i') AS 'Reach Time',
+                            FORMAT(COALESCE(r.ticket_price, 0), 2) AS 'Ticket Price'
                         FROM 
                             bus b
                         JOIN 
-                            routing r ON b.bus_id = r.bus_id"; // Query to fetch bus data along with routing information and ticket price
+                            routing r ON b.bus_id = r.bus_id";
+
                     MySqlDataAdapter adapter = new MySqlDataAdapter(query, conn);
                     DataTable dt = new DataTable();
-                    adapter.Fill(dt);
-                    dataGridView1.DataSource = dt; // Bind data to DataGridView
+                    try
+                    {
+                        adapter.Fill(dt);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error executing query: {ex.Message}", "Query Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    // Ensure no null values are present by replacing them with suitable default values
+                    foreach (DataColumn column in dt.Columns)
+                    {
+                        foreach (DataRow row in dt.Rows)
+                        {
+                            if (row.IsNull(column))
+                            {
+                                row[column] = column.DataType == typeof(string) ? string.Empty : Activator.CreateInstance(column.DataType);
+                            }
+                        }
+                    }
+
+                    try
+                    {
+                        dataGridView1.DataSource = dt; // Bind data to DataGridView
+                        // Adjust column widths
+                        dataGridView1.Columns["Bus ID"].Width = 50;
+                        dataGridView1.Columns["Bus Number"].Width = 100;
+                        dataGridView1.Columns["Bus Name"].Width = 150;
+                        dataGridView1.Columns["Bus Type"].Width = 100;
+                        dataGridView1.Columns["Seats (Total / Available)"].Width = 150;
+                        dataGridView1.Columns["Route"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill; // Fill remaining space
+                        dataGridView1.Columns["Departure Time"].Width = 100;
+                        dataGridView1.Columns["Reach Time"].Width = 100;
+                        dataGridView1.Columns["Ticket Price"].Width = 100;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error binding data to DataGridView: {ex.Message}", "Data Binding Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
 
                     // Store original colors
                     for (int i = 0; i < dataGridView1.Rows.Count; i++)
@@ -90,16 +134,23 @@ namespace Bus_Sphere.CustomForm
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error: " + ex.Message);
+                MessageBox.Show($"Error loading bus data: {ex.Message}", "Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void AdjustDataGridViewHeight()
         {
-            int totalRowHeight = dataGridView1.Rows.Cast<DataGridViewRow>().Sum(row => row.Height);
-            int headerHeight = dataGridView1.ColumnHeadersHeight;
-            int totalHeight = totalRowHeight + headerHeight + dataGridView1.Margin.Vertical;
-            dataGridView1.Height = totalHeight;
+            try
+            {
+                int totalRowHeight = dataGridView1.Rows.Cast<DataGridViewRow>().Sum(row => row.Height);
+                int headerHeight = dataGridView1.ColumnHeadersHeight;
+                int totalHeight = totalRowHeight + headerHeight + dataGridView1.Margin.Vertical;
+                dataGridView1.Height = totalHeight;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error adjusting DataGridView height: {ex.Message}", "Height Adjustment Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -127,6 +178,13 @@ namespace Bus_Sphere.CustomForm
                 // Restore the original color
                 dataGridView1.Rows[e.RowIndex].DefaultCellStyle.BackColor = originalColors[e.RowIndex];
             }
+        }
+
+        private void DataGridView1_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            // Handle the data error event to avoid crashing
+            MessageBox.Show($"Error occurred: {e.Exception.Message}", "Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            e.ThrowException = false; // Prevent the default error dialog from appearing
         }
 
         public void LoadUserControl(UserControl userControl)
@@ -157,16 +215,14 @@ namespace Bus_Sphere.CustomForm
                 string busNumber = row.Cells["Bus Number"].Value.ToString();
                 string busName = row.Cells["Bus Name"].Value.ToString();
                 string busType = row.Cells["Bus Type"].Value.ToString();
-                string totalSeats = row.Cells["Total Seats"].Value.ToString();
-                string departureLocation = row.Cells["Start"].Value.ToString();
-                string throughLocation = row.Cells["Through"].Value.ToString();
-                string arrivalLocation = row.Cells["Destination"].Value.ToString();
+                string seats = row.Cells["Seats (Total / Available)"].Value.ToString();
+                string route = row.Cells["Route"].Value.ToString();
                 string departureTime = row.Cells["Departure Time"].Value.ToString();
                 string arrivalTime = row.Cells["Reach Time"].Value.ToString();
                 string ticketPrice = row.Cells["Ticket Price"].Value.ToString();
 
                 // Display selected bus details in a MessageBox (or TextBoxes)
-                MessageBox.Show($"Selected Bus:\nID: {busID}\nNumber: {busNumber}\nName: {busName}\nType: {busType}\nSeats: {totalSeats}\nDeparture: {departureLocation} at {departureTime}\nArrival: {arrivalLocation} at {arrivalTime}\nTicket Price: {ticketPrice}", "Bus Details");
+                MessageBox.Show($"Selected Bus:\nID: {busID}\nNumber: {busNumber}\nName: {busName}\nType: {busType}\nSeats: {seats}\nRoute: {route}\nDeparture: {departureTime}\nArrival: {arrivalTime}\nTicket Price: {ticketPrice}", "Bus Details");
 
                 GoBackbtn.Visible = true;
                 LoadUserControl(new SeatLayout(busID));

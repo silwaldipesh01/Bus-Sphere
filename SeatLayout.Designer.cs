@@ -63,8 +63,9 @@
             customBtn1 = new CustomControls.CustomBtn();
             pictureBox1 = new PictureBox();
             panel2 = new Panel();
-            RoutingInfoLbl = new Label();
             CancelBtn = new CustomControls.CustomBtn();
+            panel4 = new Panel();
+            RoutingInfoLbl = new Label();
             CancelSeatTxtBox = new TextBox();
             label4 = new Label();
             panel3 = new Panel();
@@ -85,6 +86,7 @@
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel2.SuspendLayout();
+            panel4.SuspendLayout();
             panel3.SuspendLayout();
             SuspendLayout();
             // 
@@ -124,9 +126,9 @@
             panel1.Controls.Add(customBtn1);
             panel1.Controls.Add(pictureBox1);
             panel1.Dock = DockStyle.Right;
-            panel1.Location = new Point(726, 0);
+            panel1.Location = new Point(777, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(412, 758);
+            panel1.Size = new Size(420, 758);
             panel1.TabIndex = 0;
             // 
             // customBtn31
@@ -753,9 +755,9 @@
             // 
             pictureBox1.BackColor = SystemColors.ActiveCaption;
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(292, 3);
+            pictureBox1.Location = new Point(281, 15);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(55, 54);
+            pictureBox1.Size = new Size(77, 76);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 32;
             pictureBox1.TabStop = false;
@@ -763,45 +765,58 @@
             // panel2
             // 
             panel2.BackColor = Color.Pink;
-            panel2.Controls.Add(RoutingInfoLbl);
             panel2.Controls.Add(CancelBtn);
+            panel2.Controls.Add(panel4);
             panel2.Controls.Add(CancelSeatTxtBox);
             panel2.Controls.Add(label4);
             panel2.Controls.Add(panel3);
             panel2.Dock = DockStyle.Left;
             panel2.Location = new Point(0, 0);
             panel2.Name = "panel2";
-            panel2.Size = new Size(720, 758);
+            panel2.Size = new Size(779, 758);
             panel2.TabIndex = 1;
             panel2.Paint += panel2_Paint;
             // 
-            // RoutingInfoLbl
-            // 
-            RoutingInfoLbl.AutoSize = true;
-            RoutingInfoLbl.Location = new Point(81, 21);
-            RoutingInfoLbl.Name = "RoutingInfoLbl";
-            RoutingInfoLbl.Size = new Size(38, 15);
-            RoutingInfoLbl.TabIndex = 7;
-            RoutingInfoLbl.Text = "label7";
-            // 
             // CancelBtn
             // 
-            CancelBtn.BackColor = Color.FromArgb(255, 128, 0);
-            CancelBtn.BackgroundColor = Color.FromArgb(255, 128, 0);
+            CancelBtn.Anchor = AnchorStyles.None;
+            CancelBtn.BackColor = Color.MediumSlateBlue;
+            CancelBtn.BackgroundColor = Color.MediumSlateBlue;
             CancelBtn.BorderColor = Color.PaleVioletRed;
             CancelBtn.BorderRadius = 10;
             CancelBtn.BorderSize = 0;
             CancelBtn.FlatAppearance.BorderSize = 0;
             CancelBtn.FlatStyle = FlatStyle.Flat;
             CancelBtn.ForeColor = Color.White;
-            CancelBtn.Location = new Point(379, 664);
+            CancelBtn.Location = new Point(386, 663);
             CancelBtn.Name = "CancelBtn";
-            CancelBtn.Size = new Size(121, 39);
-            CancelBtn.TabIndex = 6;
-            CancelBtn.Text = "Cancel Ticket";
+            CancelBtn.Size = new Size(150, 40);
+            CancelBtn.TabIndex = 14;
+            CancelBtn.Text = "Confirm";
             CancelBtn.TextColor = Color.White;
             CancelBtn.UseVisualStyleBackColor = false;
-            CancelBtn.Click += CancelBtn_Click_1;
+            CancelBtn.Click += CancelBtn_Click;
+            // 
+            // panel4
+            // 
+            panel4.BackColor = Color.FromArgb(255, 255, 192);
+            panel4.Controls.Add(RoutingInfoLbl);
+            panel4.Location = new Point(53, 45);
+            panel4.Name = "panel4";
+            panel4.Size = new Size(627, 100);
+            panel4.TabIndex = 8;
+            // 
+            // RoutingInfoLbl
+            // 
+            RoutingInfoLbl.AutoSize = true;
+            RoutingInfoLbl.BackColor = Color.FromArgb(255, 255, 192);
+            RoutingInfoLbl.Dock = DockStyle.Fill;
+            RoutingInfoLbl.Font = new Font("Arial", 11.25F, FontStyle.Bold | FontStyle.Underline, GraphicsUnit.Point, 0);
+            RoutingInfoLbl.Location = new Point(0, 0);
+            RoutingInfoLbl.Name = "RoutingInfoLbl";
+            RoutingInfoLbl.Size = new Size(50, 18);
+            RoutingInfoLbl.TabIndex = 7;
+            RoutingInfoLbl.Text = "label7";
             // 
             // CancelSeatTxtBox
             // 
@@ -816,7 +831,7 @@
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label4.Location = new Point(81, 664);
+            label4.Location = new Point(81, 671);
             label4.Name = "label4";
             label4.Size = new Size(153, 21);
             label4.TabIndex = 3;
@@ -841,7 +856,7 @@
             panel3.Controls.Add(emailTxt);
             panel3.Controls.Add(phoneTxt);
             panel3.Controls.Add(nameTxt);
-            panel3.Location = new Point(39, 179);
+            panel3.Location = new Point(53, 151);
             panel3.Name = "panel3";
             panel3.Size = new Size(627, 458);
             panel3.TabIndex = 1;
@@ -861,7 +876,7 @@
             // checkBox1
             // 
             checkBox1.AutoSize = true;
-            checkBox1.Location = new Point(237, 273);
+            checkBox1.Location = new Point(236, 273);
             checkBox1.Name = "checkBox1";
             checkBox1.Size = new Size(82, 19);
             checkBox1.TabIndex = 12;
@@ -1006,11 +1021,13 @@
             Controls.Add(panel2);
             Controls.Add(panel1);
             Name = "SeatLayout";
-            Size = new Size(1138, 758);
+            Size = new Size(1197, 758);
             panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
+            panel4.ResumeLayout(false);
+            panel4.PerformLayout();
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
             ResumeLayout(false);
@@ -1067,9 +1084,11 @@
         private TextBox nameTxt;
         private Label label4;
         private TextBox CancelSeatTxtBox;
-        private CustomControls.CustomBtn CancelBtn;
+       
         private Label label5;
         private CheckBox checkBox1;
         private Label RoutingInfoLbl;
+        private Panel panel4;
+        private CustomControls.CustomBtn CancelBtn;
     }
 }

@@ -15,7 +15,7 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.IO;
 using System.Net;
-using static Bus_Sphere.CustomForm.SeatSelection;
+//using static Bus_Sphere.CustomForm.SeatSelection;
 using Rectangle = iTextSharp.text.Rectangle;
 using Font = iTextSharp.text.Font;
 
@@ -28,7 +28,7 @@ namespace Bus_Sphere.CustomForm
 
         public string BusId { get; set; }
         private List<Seat> seats = new List<Seat>();
-       public PassengerDetail passengerDetail = new();
+        public PassengerDetail passengerDetail = new();
 
         public SeatLayout(string busId)
         {
@@ -62,6 +62,9 @@ namespace Bus_Sphere.CustomForm
                             routing r
                         JOIN 
                             bus b ON r.bus_id = b.bus_id
+                        JOIN
+                            seats s ON r.bus_id = s.bus_id
+                             
                         WHERE 
                             r.bus_id = @BusId";
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
@@ -83,28 +86,25 @@ namespace Bus_Sphere.CustomForm
                                 string busType = reader["bus_type"]?.ToString()?.Trim() ?? "";
                                 string busNumber = reader["bus_number"]?.ToString()?.Trim() ?? "";
 
-                                RoutingInfoLbl.Text = $"Route ID: {routeId}\n" +
-                                    $"Bus ID: {busId}\n" +
-                                    $"Bus Name: {busName}\n" +
-                                    $"Bus Type: {busType}\n" +
-                                    $"Departure: {departureLocation}\n" +
-                                    $"Through: {throughLocation}\n" +
-                                    $"Arrival: {arrivalLocation}\n" +
-                                    $"Departure Time: {departureTime}\n" +
-                                    $"Arrival Time: {arrivalTime}\n" +
-                                    $"Ticket Price: {ticketPrice}" + "\n" +
-                                    $"Bus Number: {busNumber}";
-                                
-                                passengerDetail.BusNo = busNumber;
-                                passengerDetail.BusName = busName;
-                                passengerDetail.BusType = busType;
-                                passengerDetail.Source = departureLocation;
-                                passengerDetail.Destination = arrivalLocation;
-                                passengerDetail.Through = throughLocation;
-                                passengerDetail.Date = DateTime.Now.ToString();
-                                passengerDetail.ArrivalTime = arrivalTime;
-                                passengerDetail.DepartureTime = departureTime;
-                                passengerDetail.TicketPrice = Convert.ToDecimal(ticketPrice);
+                                // Use two lines (rows) for the label text, omitting route and bus IDs:
+                                RoutingInfoLbl.Text =
+                                    $"Bus Name: {busName} | Bus Type: {busType} | Bus Number: {busNumber}" +
+                                    $"\n\nRoute : {departureLocation}  ->  {throughLocation}  ->  {arrivalLocation} | Ticket Price: {ticketPrice} " +
+                                    $"\n\nTravel Duration: {departureTime}  ->  {arrivalTime}";
+
+                                passengerDetail = new PassengerDetail
+                                {
+                                    BusNo = busNumber,
+                                    BusName = busName,
+                                    BusType = busType,
+                                    Source = departureLocation,
+                                    Destination = arrivalLocation,
+                                    Through = throughLocation,
+                                    Date = DateTime.Now.ToString(),
+                                    ArrivalTime = arrivalTime,
+                                    DepartureTime = departureTime,
+                                    TicketPrice = Convert.ToDecimal(ticketPrice)
+                                };
 
                             }
                         }
@@ -224,7 +224,7 @@ namespace Bus_Sphere.CustomForm
                 .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                 .Select(x => x.Trim())
                 .ToArray();
-           
+
             if (selectedSeats.Length > 5)
             {
                 MessageBox.Show("You can book up to 5 seats at a time.");
@@ -312,7 +312,7 @@ namespace Bus_Sphere.CustomForm
 
                     MessageBox.Show("Booking successful!");
 
-                   await  SendEmailAsync(passengerDetail);
+                    await SendEmailAsync(passengerDetail);
                     ResetBookingForm();
                     UpdateSeatDisplay();
                 }
@@ -502,7 +502,7 @@ namespace Bus_Sphere.CustomForm
 
         }
 
-        private void CancelBtn_Click_1(object sender, EventArgs e)
+        private void CancelBtn_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(CancelSeatTxtBox.Text))
             {
@@ -511,7 +511,10 @@ namespace Bus_Sphere.CustomForm
             }
 
             CancelSeats();
+
         }
+
+       
 
         private void panel3_Paint(object sender, PaintEventArgs e)
         {
@@ -549,7 +552,7 @@ namespace Bus_Sphere.CustomForm
 
         static string CreateTicket(PassengerDetail passengerDetail)
         {
-            string outputPath = $"C:\\Users\\silwa\\source\\repos\\pdfGeneration\\ticket_{passengerDetail.Id}.pdf";
+            string outputPath = $"C:\\Users\\silwa\\source\\repos\\Bus Sphere\\TicketStorage\\ticket_{passengerDetail.Id}.pdf";
 
             Document doc = new Document();
             PdfWriter writer = PdfWriter.GetInstance(doc, new FileStream(outputPath, FileMode.Create));
@@ -591,6 +594,9 @@ namespace Bus_Sphere.CustomForm
                 table.AddCell(new PdfPCell(new Phrase("Bus Type:", regularFont)) { Border = Rectangle.NO_BORDER });
                 table.AddCell(new PdfPCell(new Phrase(passengerDetail.BusType, regularFont)) { Border = Rectangle.NO_BORDER });
 
+                table.AddCell(new PdfPCell(new Phrase("No of Seats", regularFont)) { Border = Rectangle.NO_BORDER });
+                table.AddCell(new PdfPCell(new Phrase(passengerDetail.Seats.Length.ToString(), regularFont)) { Border = Rectangle.NO_BORDER });
+
                 table.AddCell(new PdfPCell(new Phrase("Seat Numbers:", regularFont)) { Border = Rectangle.NO_BORDER });
                 table.AddCell(new PdfPCell(new Phrase(string.Join(", ", passengerDetail.Seats), regularFont)) { Border = Rectangle.NO_BORDER });
 
@@ -609,11 +615,11 @@ namespace Bus_Sphere.CustomForm
                 table.AddCell(new PdfPCell(new Phrase("Arrival Location:", regularFont)) { Border = Rectangle.NO_BORDER });
                 table.AddCell(new PdfPCell(new Phrase(passengerDetail.Destination, regularFont)) { Border = Rectangle.NO_BORDER });
 
-                table.AddCell(new PdfPCell(new Phrase("Ticket Price:", regularFont)) { Border = Rectangle.NO_BORDER });
+                table.AddCell(new PdfPCell(new Phrase("Ticket Price:Rs ", regularFont)) { Border = Rectangle.NO_BORDER });
                 string ticketPrice = Convert.ToInt32(passengerDetail.TicketPrice).ToString();
                 table.AddCell(new PdfPCell(new Phrase(ticketPrice, regularFont)) { Border = Rectangle.NO_BORDER });
 
-                table.AddCell(new PdfPCell(new Phrase("Total Price  :", regularFont)) { Border = Rectangle.NO_BORDER });
+                table.AddCell(new PdfPCell(new Phrase("Total Price :Rs ", regularFont)) { Border = Rectangle.NO_BORDER });
                 string total = (Convert.ToInt32(passengerDetail.TicketPrice) * passengerDetail.Seats.Length).ToString();
                 table.AddCell(new PdfPCell(new Phrase(total, regularFont)) { Border = Rectangle.NO_BORDER });
 
@@ -630,7 +636,7 @@ namespace Bus_Sphere.CustomForm
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error : "+ ex);
+                MessageBox.Show("Error : " + ex);
             }
 
             return outputPath;
@@ -644,7 +650,7 @@ namespace Bus_Sphere.CustomForm
                 headerTable.TotalWidth = document.PageSize.Width - document.LeftMargin - document.RightMargin;
 
                 headerTable.HorizontalAlignment = Element.ALIGN_CENTER;
-                string imagePath = "C:\\Users\\silwa\\source\\repos\\Bus Sphere\\Images\\busLogo.png";
+                string imagePath = "C:\\Users\\silwa\\source\\repos\\Bus Sphere\\Images\\BusLogoNewest_enhanced.png";
                 iTextSharp.text.Image image = iTextSharp.text.Image.GetInstance(imagePath);
                 image.ScaleToFit(474f, 87f);
                 PdfPCell imageCell = new PdfPCell(image);
@@ -659,6 +665,36 @@ namespace Bus_Sphere.CustomForm
                 headerTable.WriteSelectedRows(0, -1, document.LeftMargin, document.PageSize.Height - 15, writer.DirectContent);
             }
         }
+        public class Seat
+        {
+            public string SeatNumber { get; set; }
+            public BookingStatus Status { get; set; }
 
+            public Seat(string seatNumber, BookingStatus status)
+            {
+                this.SeatNumber = seatNumber;
+                this.Status = status;
+            }
+
+            public enum BookingStatus
+            {
+                Available,
+                Booked,
+                Unavailable
+            }
+
+            public Color GetSeatAvailabilityColor()
+            {
+                return Status switch
+                {
+                    BookingStatus.Available => Color.FromArgb(0, 192, 192),
+                    BookingStatus.Booked => Color.Red,
+                    BookingStatus.Unavailable => Color.Gray,
+                    _ => Color.Gray
+                };
+            }
+        }
+
+        
     }
 }
