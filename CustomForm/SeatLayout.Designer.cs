@@ -69,6 +69,7 @@
             CancelSeatTxtBox = new TextBox();
             label4 = new Label();
             panel3 = new Panel();
+            checkBox2 = new CheckBox();
             label5 = new Label();
             checkBox1 = new CheckBox();
             label6 = new Label();
@@ -126,9 +127,9 @@
             panel1.Controls.Add(customBtn1);
             panel1.Controls.Add(pictureBox1);
             panel1.Dock = DockStyle.Right;
-            panel1.Location = new Point(777, 0);
+            panel1.Location = new Point(790, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(420, 758);
+            panel1.Size = new Size(407, 758);
             panel1.TabIndex = 0;
             // 
             // customBtn31
@@ -755,7 +756,7 @@
             // 
             pictureBox1.BackColor = SystemColors.ActiveCaption;
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(281, 15);
+            pictureBox1.Location = new Point(288, 15);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(77, 76);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -773,7 +774,7 @@
             panel2.Dock = DockStyle.Left;
             panel2.Location = new Point(0, 0);
             panel2.Name = "panel2";
-            panel2.Size = new Size(779, 758);
+            panel2.Size = new Size(784, 758);
             panel2.TabIndex = 1;
             panel2.Paint += panel2_Paint;
             // 
@@ -788,7 +789,7 @@
             CancelBtn.FlatAppearance.BorderSize = 0;
             CancelBtn.FlatStyle = FlatStyle.Flat;
             CancelBtn.ForeColor = Color.White;
-            CancelBtn.Location = new Point(386, 663);
+            CancelBtn.Location = new Point(389, 663);
             CancelBtn.Name = "CancelBtn";
             CancelBtn.Size = new Size(150, 40);
             CancelBtn.TabIndex = 14;
@@ -811,7 +812,7 @@
             RoutingInfoLbl.AutoSize = true;
             RoutingInfoLbl.BackColor = Color.FromArgb(255, 255, 192);
             RoutingInfoLbl.Dock = DockStyle.Fill;
-            RoutingInfoLbl.Font = new Font("Arial", 11.25F, FontStyle.Bold | FontStyle.Underline, GraphicsUnit.Point, 0);
+            RoutingInfoLbl.Font = new Font("Arial", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             RoutingInfoLbl.Location = new Point(0, 0);
             RoutingInfoLbl.Name = "RoutingInfoLbl";
             RoutingInfoLbl.Size = new Size(50, 18);
@@ -842,6 +843,7 @@
             // 
             panel3.Anchor = AnchorStyles.None;
             panel3.BackColor = Color.FromArgb(0, 192, 192);
+            panel3.Controls.Add(checkBox2);
             panel3.Controls.Add(label5);
             panel3.Controls.Add(checkBox1);
             panel3.Controls.Add(label6);
@@ -856,32 +858,43 @@
             panel3.Controls.Add(emailTxt);
             panel3.Controls.Add(phoneTxt);
             panel3.Controls.Add(nameTxt);
-            panel3.Location = new Point(53, 151);
+            panel3.Location = new Point(56, 151);
             panel3.Name = "panel3";
             panel3.Size = new Size(627, 458);
             panel3.TabIndex = 1;
             panel3.Paint += panel3_Paint;
+            // 
+            // checkBox2
+            // 
+            checkBox2.AutoSize = true;
+            checkBox2.Location = new Point(346, 320);
+            checkBox2.Name = "checkBox2";
+            checkBox2.Size = new Size(64, 19);
+            checkBox2.TabIndex = 14;
+            checkBox2.Text = "Unpaid";
+            checkBox2.UseVisualStyleBackColor = true;
             // 
             // label5
             // 
             label5.Anchor = AnchorStyles.None;
             label5.AutoSize = true;
             label5.Font = new Font("Segoe UI", 12F);
-            label5.Location = new Point(109, 269);
+            label5.Location = new Point(168, 316);
             label5.Name = "label5";
-            label5.Size = new Size(94, 21);
+            label5.Size = new Size(77, 21);
             label5.TabIndex = 13;
-            label5.Text = "Enter Seats :";
+            label5.Text = "Payment :";
             // 
             // checkBox1
             // 
             checkBox1.AutoSize = true;
-            checkBox1.Location = new Point(236, 273);
+            checkBox1.Location = new Point(272, 320);
             checkBox1.Name = "checkBox1";
-            checkBox1.Size = new Size(82, 19);
+            checkBox1.Size = new Size(49, 19);
             checkBox1.TabIndex = 12;
-            checkBox1.Text = "checkBox1";
+            checkBox1.Text = "Paid";
             checkBox1.UseVisualStyleBackColor = true;
+            checkBox1.CheckedChanged += checkBox1_CheckedChanged;
             // 
             // label6
             // 
@@ -899,7 +912,7 @@
             seatLbl.Anchor = AnchorStyles.None;
             seatLbl.AutoSize = true;
             seatLbl.Font = new Font("Segoe UI", 12F);
-            seatLbl.Location = new Point(-1, 211);
+            seatLbl.Location = new Point(22, 214);
             seatLbl.Name = "seatLbl";
             seatLbl.Size = new Size(94, 21);
             seatLbl.TabIndex = 10;
@@ -910,7 +923,7 @@
             addressTxt.Anchor = AnchorStyles.None;
             addressTxt.AutoSize = true;
             addressTxt.Font = new Font("Segoe UI", 12F);
-            addressTxt.Location = new Point(343, 147);
+            addressTxt.Location = new Point(330, 150);
             addressTxt.Name = "addressTxt";
             addressTxt.Size = new Size(73, 21);
             addressTxt.TabIndex = 9;
@@ -921,7 +934,7 @@
             label3.Anchor = AnchorStyles.None;
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 12F);
-            label3.Location = new Point(355, 85);
+            label3.Location = new Point(342, 88);
             label3.Name = "label3";
             label3.Size = new Size(61, 21);
             label3.TabIndex = 8;
@@ -932,7 +945,7 @@
             label2.Anchor = AnchorStyles.None;
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 12F);
-            label2.Location = new Point(34, 147);
+            label2.Location = new Point(57, 150);
             label2.Name = "label2";
             label2.Size = new Size(55, 21);
             label2.TabIndex = 7;
@@ -943,7 +956,7 @@
             label1.Anchor = AnchorStyles.None;
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 12F);
-            label1.Location = new Point(34, 85);
+            label1.Location = new Point(57, 88);
             label1.Name = "label1";
             label1.Size = new Size(59, 21);
             label1.TabIndex = 6;
@@ -960,7 +973,7 @@
             btnConfirm.FlatAppearance.BorderSize = 0;
             btnConfirm.FlatStyle = FlatStyle.Flat;
             btnConfirm.ForeColor = Color.White;
-            btnConfirm.Location = new Point(237, 325);
+            btnConfirm.Location = new Point(222, 407);
             btnConfirm.Name = "btnConfirm";
             btnConfirm.Size = new Size(150, 40);
             btnConfirm.TabIndex = 5;
@@ -973,7 +986,7 @@
             // 
             seatsTxtBx.Anchor = AnchorStyles.None;
             seatsTxtBx.Font = new Font("Segoe UI", 12F);
-            seatsTxtBx.Location = new Point(109, 208);
+            seatsTxtBx.Location = new Point(132, 211);
             seatsTxtBx.Name = "seatsTxtBx";
             seatsTxtBx.Size = new Size(155, 29);
             seatsTxtBx.TabIndex = 4;
@@ -982,7 +995,7 @@
             // 
             addressTxtBx.Anchor = AnchorStyles.None;
             addressTxtBx.Font = new Font("Segoe UI", 12F);
-            addressTxtBx.Location = new Point(426, 144);
+            addressTxtBx.Location = new Point(413, 147);
             addressTxtBx.Name = "addressTxtBx";
             addressTxtBx.Size = new Size(155, 29);
             addressTxtBx.TabIndex = 3;
@@ -991,7 +1004,7 @@
             // 
             emailTxt.Anchor = AnchorStyles.None;
             emailTxt.Font = new Font("Segoe UI", 12F);
-            emailTxt.Location = new Point(109, 144);
+            emailTxt.Location = new Point(132, 147);
             emailTxt.Name = "emailTxt";
             emailTxt.Size = new Size(155, 29);
             emailTxt.TabIndex = 2;
@@ -1000,7 +1013,7 @@
             // 
             phoneTxt.Anchor = AnchorStyles.None;
             phoneTxt.Font = new Font("Segoe UI", 12F);
-            phoneTxt.Location = new Point(426, 82);
+            phoneTxt.Location = new Point(413, 85);
             phoneTxt.Name = "phoneTxt";
             phoneTxt.Size = new Size(155, 29);
             phoneTxt.TabIndex = 1;
@@ -1009,7 +1022,7 @@
             // 
             nameTxt.Anchor = AnchorStyles.None;
             nameTxt.Font = new Font("Segoe UI", 12F);
-            nameTxt.Location = new Point(109, 82);
+            nameTxt.Location = new Point(132, 85);
             nameTxt.Name = "nameTxt";
             nameTxt.Size = new Size(155, 29);
             nameTxt.TabIndex = 0;
@@ -1090,5 +1103,6 @@
         private Label RoutingInfoLbl;
         private Panel panel4;
         private CustomControls.CustomBtn CancelBtn;
+        private CheckBox checkBox2;
     }
 }

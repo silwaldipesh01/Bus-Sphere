@@ -60,9 +60,11 @@ namespace Bus_Sphere
                     {
                         if (PasswordHasher.ValidatePassword(PasswordTxtBox.Text, $"{reader["passwordhash"]}"))
                         {
+                            new MainPage().Show();
                             this.Hide();
+                            //this.Close();
                           // new MainPage().Show();
-                          new MainPage().Show();
+                          
                         }
                         else
                         {

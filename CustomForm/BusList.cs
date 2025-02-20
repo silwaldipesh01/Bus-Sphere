@@ -13,6 +13,9 @@ namespace Bus_Sphere.CustomForm
     {
         const string connectionString = "server=localhost;user=root;database=bussphere;port=3306;password=";
         private readonly Dictionary<int, Color> originalColors = new Dictionary<int, Color>();
+        private bool isRowClicked = false;
+        public string busId;
+        public string routeId;
 
         public BusList()
         {
@@ -20,6 +23,7 @@ namespace Bus_Sphere.CustomForm
             InitializeDataGridView();
             LoadBusData();
             GoBackbtn.Visible = false;
+            BtnUpdateBooking.Enabled = false;
         }
 
         private void InitializeDataGridView()
@@ -40,7 +44,7 @@ namespace Bus_Sphere.CustomForm
             dataGridView1.GridColor = Color.White; // Set grid line color
             dataGridView1.CellBorderStyle = DataGridViewCellBorderStyle.Single; // Ensure single border style
             dataGridView1.BorderStyle = BorderStyle.FixedSingle; // Set border style of DataGridView
-          //  dataGridView1.BackgroundColor = Color.LightGray; // Set background color
+                                                                 //  dataGridView1.BackgroundColor = Color.LightGray; // Set background color
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells; // Set columns to auto-size mode based on content
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
 
@@ -55,6 +59,7 @@ namespace Bus_Sphere.CustomForm
         {
             try
             {
+                
                 using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
                     conn.Open();
@@ -70,8 +75,8 @@ namespace Bus_Sphere.CustomForm
                                 WHERE s.bus_id = b.bus_id 
                                   AND s.Status = 'Available'), 0)) AS 'Seats (Total / Available)',
                             CONCAT(COALESCE(r.departure_location, ''), ' - ', COALESCE(r.through_location, ''), ' - ', COALESCE(r.arrival_location, '')) AS 'Route',
-                            TIME_FORMAT(COALESCE(r.departure_time, '00:00:00'), '%H:%i') AS 'Departure Time',
-                            TIME_FORMAT(COALESCE(r.arrival_time, '00:00:00'), '%H:%i') AS 'Reach Time',
+                            DATE_FORMAT(r.departure_time, '%Y-%m-%d %H:%i') AS 'Departure Time',
+                            DATE_FORMAT(r.arrival_time, '%Y-%m-%d %H:%i') AS 'Reach Time',
                             FORMAT(COALESCE(r.ticket_price, 0), 2) AS 'Ticket Price'
                         FROM 
                             bus b
@@ -112,8 +117,8 @@ namespace Bus_Sphere.CustomForm
                         dataGridView1.Columns["Bus Type"].Width = 100;
                         dataGridView1.Columns["Seats (Total / Available)"].Width = 150;
                         dataGridView1.Columns["Route"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill; // Fill remaining space
-                        dataGridView1.Columns["Departure Time"].Width = 100;
-                        dataGridView1.Columns["Reach Time"].Width = 100;
+                        dataGridView1.Columns["Departure Time"].Width = 150;
+                        dataGridView1.Columns["Reach Time"].Width = 150;
                         dataGridView1.Columns["Ticket Price"].Width = 100;
                     }
                     catch (Exception ex)
@@ -153,11 +158,6 @@ namespace Bus_Sphere.CustomForm
             }
         }
 
-        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            // Handle cell click event if needed
-        }
-
         private void dataGridView1_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -168,6 +168,12 @@ namespace Bus_Sphere.CustomForm
                     originalColors[e.RowIndex] = dataGridView1.Rows[e.RowIndex].DefaultCellStyle.BackColor;
                 }
                 dataGridView1.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.LightBlue;
+                if (!isRowClicked)
+                {
+                    BtnUpdateBooking.BackColor = Color.FromArgb(36, 154, 211);
+                    BtnCancelBooking.BackColor = Color.FromArgb(36, 154, 211);
+                }
+                BtnUpdateBooking_MouseHover(sender, e);
             }
         }
 
@@ -175,8 +181,13 @@ namespace Bus_Sphere.CustomForm
         {
             if (e.RowIndex >= 0 && originalColors.ContainsKey(e.RowIndex))
             {
-                // Restore the original color
+                // Restore the original color, but keep the button colors unchanged if a row is clicked
                 dataGridView1.Rows[e.RowIndex].DefaultCellStyle.BackColor = originalColors[e.RowIndex];
+                if (!isRowClicked)
+                {
+                    BtnUpdateBooking.BackColor = Color.FromArgb(30, 129, 176);
+                    BtnCancelBooking.BackColor = Color.FromArgb(30, 129, 176);
+                }
             }
         }
 
@@ -190,6 +201,11 @@ namespace Bus_Sphere.CustomForm
         public void LoadUserControl(UserControl userControl)
         {
             // Clear existing controls
+
+            GoBackbtn.Visible = true;
+            BtnAddBooking.Visible = false;
+            BtnCancelBooking.Visible = false;
+            BtnUpdateBooking.Visible = false;
             panel2.BringToFront();
             panel2.Controls.Clear();
 
@@ -211,21 +227,36 @@ namespace Bus_Sphere.CustomForm
                 DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
 
                 // Extract data from the selected row
-                string busID = row.Cells["Bus ID"].Value.ToString();
-                string busNumber = row.Cells["Bus Number"].Value.ToString();
-                string busName = row.Cells["Bus Name"].Value.ToString();
-                string busType = row.Cells["Bus Type"].Value.ToString();
-                string seats = row.Cells["Seats (Total / Available)"].Value.ToString();
-                string route = row.Cells["Route"].Value.ToString();
-                string departureTime = row.Cells["Departure Time"].Value.ToString();
-                string arrivalTime = row.Cells["Reach Time"].Value.ToString();
-                string ticketPrice = row.Cells["Ticket Price"].Value.ToString();
+               string busID = row.Cells["Bus ID"].Value.ToString();
 
                 // Display selected bus details in a MessageBox (or TextBoxes)
-                MessageBox.Show($"Selected Bus:\nID: {busID}\nNumber: {busNumber}\nName: {busName}\nType: {busType}\nSeats: {seats}\nRoute: {route}\nDeparture: {departureTime}\nArrival: {arrivalTime}\nTicket Price: {ticketPrice}", "Bus Details");
+                //MessageBox.Show($"Selected Bus:\nID: {busID}\nNumber: {busNumber}\nName: {busName}\nType: {busType}\nSeats: {seats}\nRoute: {route}\nDeparture: {departureTime}\nArrival: {arrivalTime}\nTicket Price: {ticketPrice}", "Bus Details");
 
-                GoBackbtn.Visible = true;
                 LoadUserControl(new SeatLayout(busID));
+            }
+        }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Handle cell click event if needed
+            if (e.RowIndex >= 0)
+            {
+                // Select the entire row
+                dataGridView1.Rows[e.RowIndex].Selected = true;
+
+                // Get the selected row
+                DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+
+                // Extract data from the selected row
+                busId = row.Cells["Bus ID"].Value.ToString();
+                routeId = row.Cells["Route"].Value.ToString();
+
+                // Keep the button colors unchanged when a row is clicked
+                BtnUpdateBooking.Enabled = true;
+                BtnUpdateBooking.BackColor = Color.FromArgb(36, 154, 211);
+                BtnCancelBooking.BackColor = Color.FromArgb(36, 154, 211);
+                isRowClicked = true;
+
             }
         }
 
@@ -234,5 +265,45 @@ namespace Bus_Sphere.CustomForm
             this.Controls.Clear();
             this.Controls.Add(new BusList());
         }
+
+        private void BtnUpdateBooking_Click(object sender, EventArgs e)
+        {
+            // Code for updating booking
+            updateBookingForm updateBookingForm = new updateBookingForm(Int32.Parse(busId));
+            updateBookingForm.ShowDialog();
+        }
+
+        private void BtnCancelBooking_Click(object sender, EventArgs e)
+        {
+            // Code for canceling booking
+        }
+
+        private void BtnUpdateBooking_MouseHover(object sender, EventArgs e)
+        {
+            // Code for mouse hover on update button
+        }
+
+        private void BtnAddBooking_Click(object sender, EventArgs e)
+        {
+            BookingForm bookingForm = new BookingForm();
+            bookingForm.ShowDialog();
+            GoBackbtn_Click(sender, e);
+
+
+        }
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        //private void customBtn1_Click(object sender, EventArgs e)
+        //{
+
+        //}
+
+        //private void customBtn3_Click(object sender, EventArgs e)
+        //{
+
+        //}
     }
 }

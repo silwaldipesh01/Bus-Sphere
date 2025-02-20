@@ -25,7 +25,7 @@ namespace Bus_Sphere
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             // ApplicationConfiguration.Initialize();
-            // Application.Run(new LoginPage());
+             //Application.Run(new LoginPage());
             // Application.Run(new LoadBuses());
             Application.Run(new MainPage());
         }

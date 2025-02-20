@@ -15,9 +15,9 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.IO;
 using System.Net;
-//using static Bus_Sphere.CustomForm.SeatSelection;
 using Rectangle = iTextSharp.text.Rectangle;
 using Font = iTextSharp.text.Font;
+using static iTextSharp.text.TabStop;
 
 namespace Bus_Sphere.CustomForm
 {
@@ -514,7 +514,7 @@ namespace Bus_Sphere.CustomForm
 
         }
 
-       
+
 
         private void panel3_Paint(object sender, PaintEventArgs e)
         {
@@ -542,7 +542,7 @@ namespace Bus_Sphere.CustomForm
                 smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
                 smtpClient.EnableSsl = true;
                 await smtpClient.SendMailAsync(mail);
-                MessageBox.Show("Email sent successfully to " + passengerDetail.Email);
+                
             }
             catch (Exception ex)
             {
@@ -552,7 +552,7 @@ namespace Bus_Sphere.CustomForm
 
         static string CreateTicket(PassengerDetail passengerDetail)
         {
-            string outputPath = $"C:\\Users\\silwa\\source\\repos\\Bus Sphere\\TicketStorage\\ticket_{passengerDetail.Id}.pdf";
+            string outputPath = $"C:\\Users\\silwa\\source\\repos\\Bus Sphere\\TicketStorage\\ticket_{passengerDetail.Id + passengerDetail.Name} .pdf";
 
             Document doc = new Document();
             PdfWriter writer = PdfWriter.GetInstance(doc, new FileStream(outputPath, FileMode.Create));
@@ -571,6 +571,7 @@ namespace Bus_Sphere.CustomForm
 
                 PdfPTable table = new PdfPTable(2);
                 table.WidthPercentage = 100;
+                table.HorizontalAlignment = Element.ALIGN_CENTER;
                 table.SetWidths(new float[] { 1, 2 });
 
                 table.AddCell(new PdfPCell(new Phrase("Passenger Name:", regularFont)) { Border = Rectangle.NO_BORDER });
@@ -615,28 +616,28 @@ namespace Bus_Sphere.CustomForm
                 table.AddCell(new PdfPCell(new Phrase("Arrival Location:", regularFont)) { Border = Rectangle.NO_BORDER });
                 table.AddCell(new PdfPCell(new Phrase(passengerDetail.Destination, regularFont)) { Border = Rectangle.NO_BORDER });
 
-                table.AddCell(new PdfPCell(new Phrase("Ticket Price:Rs ", regularFont)) { Border = Rectangle.NO_BORDER });
-                string ticketPrice = Convert.ToInt32(passengerDetail.TicketPrice).ToString();
-                table.AddCell(new PdfPCell(new Phrase(ticketPrice, regularFont)) { Border = Rectangle.NO_BORDER });
+                table.AddCell(new PdfPCell(new Phrase("Ticket Price:", regularFont)) { Border = Rectangle.NO_BORDER });
+                string ticketPrice = Convert.ToInt32( passengerDetail.TicketPrice).ToString();
+                table.AddCell(new PdfPCell(new Phrase("Rs : " + ticketPrice, regularFont)) { Border = Rectangle.NO_BORDER });
 
-                table.AddCell(new PdfPCell(new Phrase("Total Price :Rs ", regularFont)) { Border = Rectangle.NO_BORDER });
-                string total = (Convert.ToInt32(passengerDetail.TicketPrice) * passengerDetail.Seats.Length).ToString();
-                table.AddCell(new PdfPCell(new Phrase(total, regularFont)) { Border = Rectangle.NO_BORDER });
-
-
+                table.AddCell(new PdfPCell(new Phrase("Total Price : ", regularFont)) { Border = Rectangle.NO_BORDER });
+                string total = (Convert.ToInt32(  passengerDetail.TicketPrice * passengerDetail.Seats.Length)).ToString();
+                table.AddCell(new PdfPCell(new Phrase("Rs : " + total, regularFont)) { Border = Rectangle.NO_BORDER });
 
 
-                doc.Add(table);
+               
 
+               
+                doc.Add(table); 
                 doc.Add(new Paragraph("\n\n"));
                 doc.Add(new Paragraph("Thank you for choosing Bus Sphere. We wish you a pleasant journey!", regularFont) { Alignment = Element.ALIGN_CENTER });
 
                 doc.Close();
-                MessageBox.Show("PDF created successfully at " + outputPath);
+               // MessageBox.Show("PDF created successfully at " + outputPath);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error : " + ex);
+                MessageBox.Show("Error  creating ticket: " + ex);
             }
 
             return outputPath;
@@ -665,36 +666,11 @@ namespace Bus_Sphere.CustomForm
                 headerTable.WriteSelectedRows(0, -1, document.LeftMargin, document.PageSize.Height - 15, writer.DirectContent);
             }
         }
-        public class Seat
+       
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            public string SeatNumber { get; set; }
-            public BookingStatus Status { get; set; }
 
-            public Seat(string seatNumber, BookingStatus status)
-            {
-                this.SeatNumber = seatNumber;
-                this.Status = status;
-            }
-
-            public enum BookingStatus
-            {
-                Available,
-                Booked,
-                Unavailable
-            }
-
-            public Color GetSeatAvailabilityColor()
-            {
-                return Status switch
-                {
-                    BookingStatus.Available => Color.FromArgb(0, 192, 192),
-                    BookingStatus.Booked => Color.Red,
-                    BookingStatus.Unavailable => Color.Gray,
-                    _ => Color.Gray
-                };
-            }
         }
-
-        
     }
 }

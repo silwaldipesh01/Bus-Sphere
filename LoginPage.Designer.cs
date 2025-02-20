@@ -194,6 +194,7 @@ namespace Bus_Sphere
             Controls.Add(LoginBtn);
             Controls.Add(pictureBox1);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            ImeMode = ImeMode.On;
             Name = "LoginPage";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Login";

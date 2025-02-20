@@ -33,13 +33,13 @@ namespace Bus_Sphere.packages
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainPage));
             MenuPanel = new Panel();
             customBtn9 = new CustomBtn();
-            customBtn8 = new CustomBtn();
             customBtn7 = new CustomBtn();
             customBtn6 = new CustomBtn();
             customBtn4 = new CustomBtn();
             pictureBox1 = new PictureBox();
             MainPanel = new Panel();
             busList1 = new CustomForm.BusList();
+            BtnMgmtSaff = new CustomBtn();
             MenuPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             MainPanel.SuspendLayout();
@@ -49,8 +49,8 @@ namespace Bus_Sphere.packages
             // 
             MenuPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             MenuPanel.BackColor = Color.Transparent;
+            MenuPanel.Controls.Add(BtnMgmtSaff);
             MenuPanel.Controls.Add(customBtn9);
-            MenuPanel.Controls.Add(customBtn8);
             MenuPanel.Controls.Add(customBtn7);
             MenuPanel.Controls.Add(customBtn6);
             MenuPanel.Controls.Add(customBtn4);
@@ -60,56 +60,41 @@ namespace Bus_Sphere.packages
             MenuPanel.Name = "MenuPanel";
             MenuPanel.Size = new Size(258, 814);
             MenuPanel.TabIndex = 1;
+            MenuPanel.Paint += MenuPanel_Paint;
             // 
             // customBtn9
             // 
-            customBtn9.BackColor = Color.MediumSlateBlue;
-            customBtn9.BackgroundColor = Color.MediumSlateBlue;
-            customBtn9.BorderColor = Color.PaleVioletRed;
-            customBtn9.BorderRadius = 0;
+            customBtn9.BackColor = Color.FromArgb(30, 129, 176);
+            customBtn9.BackgroundColor = Color.FromArgb(30, 129, 176);
+            customBtn9.BorderColor = Color.White;
+            customBtn9.BorderRadius = 10;
             customBtn9.BorderSize = 0;
             customBtn9.FlatAppearance.BorderSize = 0;
             customBtn9.FlatStyle = FlatStyle.Flat;
+            customBtn9.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
             customBtn9.ForeColor = Color.White;
-            customBtn9.Location = new Point(3, 428);
+            customBtn9.Location = new Point(3, 509);
             customBtn9.Name = "customBtn9";
-            customBtn9.Size = new Size(252, 40);
+            customBtn9.Size = new Size(252, 65);
             customBtn9.TabIndex = 10;
             customBtn9.Text = "Bus Details";
             customBtn9.TextColor = Color.White;
             customBtn9.UseVisualStyleBackColor = false;
             // 
-            // customBtn8
-            // 
-            customBtn8.BackColor = Color.MediumSlateBlue;
-            customBtn8.BackgroundColor = Color.MediumSlateBlue;
-            customBtn8.BorderColor = Color.PaleVioletRed;
-            customBtn8.BorderRadius = 0;
-            customBtn8.BorderSize = 0;
-            customBtn8.FlatAppearance.BorderSize = 0;
-            customBtn8.FlatStyle = FlatStyle.Flat;
-            customBtn8.ForeColor = Color.White;
-            customBtn8.Location = new Point(3, 566);
-            customBtn8.Name = "customBtn8";
-            customBtn8.Size = new Size(252, 40);
-            customBtn8.TabIndex = 9;
-            customBtn8.Text = "staffs";
-            customBtn8.TextColor = Color.White;
-            customBtn8.UseVisualStyleBackColor = false;
-            // 
             // customBtn7
             // 
-            customBtn7.BackColor = Color.MediumSlateBlue;
-            customBtn7.BackgroundColor = Color.MediumSlateBlue;
-            customBtn7.BorderColor = Color.PaleVioletRed;
-            customBtn7.BorderRadius = 0;
+            customBtn7.BackColor = Color.FromArgb(30, 129, 176);
+            customBtn7.BackgroundColor = Color.FromArgb(30, 129, 176);
+            customBtn7.BorderColor = Color.White;
+            customBtn7.BorderRadius = 10;
             customBtn7.BorderSize = 0;
             customBtn7.FlatAppearance.BorderSize = 0;
             customBtn7.FlatStyle = FlatStyle.Flat;
+            customBtn7.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
             customBtn7.ForeColor = Color.White;
-            customBtn7.Location = new Point(3, 520);
+            customBtn7.Location = new Point(3, 722);
             customBtn7.Name = "customBtn7";
-            customBtn7.Size = new Size(252, 40);
+            customBtn7.Size = new Size(252, 65);
             customBtn7.TabIndex = 8;
             customBtn7.Text = "Reports";
             customBtn7.TextColor = Color.White;
@@ -117,17 +102,18 @@ namespace Bus_Sphere.packages
             // 
             // customBtn6
             // 
-            customBtn6.BackColor = Color.MediumSlateBlue;
-            customBtn6.BackgroundColor = Color.MediumSlateBlue;
-            customBtn6.BorderColor = Color.PaleVioletRed;
-            customBtn6.BorderRadius = 0;
+            customBtn6.BackColor = Color.FromArgb(30, 129, 176);
+            customBtn6.BackgroundColor = Color.FromArgb(30, 129, 176);
+            customBtn6.BorderColor = Color.White;
+            customBtn6.BorderRadius = 10;
             customBtn6.BorderSize = 0;
             customBtn6.FlatAppearance.BorderSize = 0;
             customBtn6.FlatStyle = FlatStyle.Flat;
+            customBtn6.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
             customBtn6.ForeColor = Color.White;
-            customBtn6.Location = new Point(3, 474);
+            customBtn6.Location = new Point(3, 580);
             customBtn6.Name = "customBtn6";
-            customBtn6.Size = new Size(252, 40);
+            customBtn6.Size = new Size(252, 65);
             customBtn6.TabIndex = 7;
             customBtn6.Text = "Routes";
             customBtn6.TextColor = Color.White;
@@ -135,19 +121,20 @@ namespace Bus_Sphere.packages
             // 
             // customBtn4
             // 
-            customBtn4.BackColor = Color.MediumSlateBlue;
-            customBtn4.BackgroundColor = Color.MediumSlateBlue;
-            customBtn4.BorderColor = Color.PaleVioletRed;
-            customBtn4.BorderRadius = 0;
+            customBtn4.BackColor = Color.FromArgb(30, 129, 176);
+            customBtn4.BackgroundColor = Color.FromArgb(30, 129, 176);
+            customBtn4.BorderColor = Color.White;
+            customBtn4.BorderRadius = 10;
             customBtn4.BorderSize = 0;
             customBtn4.FlatAppearance.BorderSize = 0;
             customBtn4.FlatStyle = FlatStyle.Flat;
+            customBtn4.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
             customBtn4.ForeColor = Color.White;
-            customBtn4.Location = new Point(3, 382);
+            customBtn4.Location = new Point(3, 438);
             customBtn4.Name = "customBtn4";
-            customBtn4.Size = new Size(252, 40);
+            customBtn4.Size = new Size(252, 65);
             customBtn4.TabIndex = 6;
-            customBtn4.Text = "bookigns";
+            customBtn4.Text = "Bookings ";
             customBtn4.TextColor = Color.White;
             customBtn4.UseVisualStyleBackColor = false;
             // 
@@ -156,7 +143,7 @@ namespace Bus_Sphere.packages
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
             pictureBox1.Location = new Point(3, 3);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(255, 267);
+            pictureBox1.Size = new Size(248, 248);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 5;
             pictureBox1.TabStop = false;
@@ -181,6 +168,26 @@ namespace Bus_Sphere.packages
             busList1.Size = new Size(1197, 814);
             busList1.TabIndex = 0;
             busList1.Load += busList1_Load;
+            // 
+            // BtnMgmtSaff
+            // 
+            BtnMgmtSaff.BackColor = Color.FromArgb(30, 129, 176);
+            BtnMgmtSaff.BackgroundColor = Color.FromArgb(30, 129, 176);
+            BtnMgmtSaff.BorderColor = Color.White;
+            BtnMgmtSaff.BorderRadius = 10;
+            BtnMgmtSaff.BorderSize = 0;
+            BtnMgmtSaff.FlatAppearance.BorderSize = 0;
+            BtnMgmtSaff.FlatStyle = FlatStyle.Flat;
+            BtnMgmtSaff.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
+            BtnMgmtSaff.ForeColor = Color.White;
+            BtnMgmtSaff.Location = new Point(3, 651);
+            BtnMgmtSaff.Name = "BtnMgmtSaff";
+            BtnMgmtSaff.Size = new Size(252, 65);
+            BtnMgmtSaff.TabIndex = 11;
+            BtnMgmtSaff.Text = "staffs";
+            BtnMgmtSaff.TextColor = Color.White;
+            BtnMgmtSaff.UseVisualStyleBackColor = false;
+            BtnMgmtSaff.Click += BtnMgmtSaff_Click;
             // 
             // MainPage
             // 
@@ -211,10 +218,10 @@ namespace Bus_Sphere.packages
         private PictureBox pictureBox1;
         private Panel MainPanel;
         private CustomBtn customBtn9;
-        private CustomBtn customBtn8;
         private CustomBtn customBtn7;
         private CustomBtn customBtn6;
         private CustomBtn customBtn4;
         private CustomForm.BusList busList1;
+        private CustomBtn BtnMgmtSaff;
     }
 }

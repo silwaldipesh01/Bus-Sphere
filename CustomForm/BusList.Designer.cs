@@ -33,9 +33,9 @@ namespace Bus_Sphere.CustomForm
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BusList));
             panel1 = new Panel();
             panel3 = new Panel();
-            customBtn3 = new CustomBtn();
-            customBtn2 = new CustomBtn();
-            customBtn1 = new CustomBtn();
+            BtnUpdateBooking = new CustomBtn();
+            BtnCancelBooking = new CustomBtn();
+            BtnAddBooking = new CustomBtn();
             GoBackbtn = new CustomBtn();
             panel2 = new Panel();
             dataGridView1 = new DataGridView();
@@ -57,9 +57,9 @@ namespace Bus_Sphere.CustomForm
             // 
             // panel3
             // 
-            panel3.Controls.Add(customBtn3);
-            panel3.Controls.Add(customBtn2);
-            panel3.Controls.Add(customBtn1);
+            panel3.Controls.Add(BtnUpdateBooking);
+            panel3.Controls.Add(BtnCancelBooking);
+            panel3.Controls.Add(BtnAddBooking);
             panel3.Controls.Add(GoBackbtn);
             panel3.Dock = DockStyle.Top;
             panel3.Location = new Point(0, 0);
@@ -67,67 +67,75 @@ namespace Bus_Sphere.CustomForm
             panel3.Size = new Size(1197, 53);
             panel3.TabIndex = 3;
             // 
-            // customBtn3
+            // BtnUpdateBooking
             // 
-            customBtn3.BackColor = Color.MediumSlateBlue;
-            customBtn3.BackgroundColor = Color.MediumSlateBlue;
-            customBtn3.BorderColor = Color.PaleVioletRed;
-            customBtn3.BorderRadius = 0;
-            customBtn3.BorderSize = 0;
-            customBtn3.FlatAppearance.BorderSize = 0;
-            customBtn3.FlatStyle = FlatStyle.Flat;
-            customBtn3.ForeColor = Color.White;
-            customBtn3.Location = new Point(418, 3);
-            customBtn3.Name = "customBtn3";
-            customBtn3.Size = new Size(350, 47);
-            customBtn3.TabIndex = 6;
-            customBtn3.Text = "Update Booking";
-            customBtn3.TextColor = Color.White;
-            customBtn3.UseVisualStyleBackColor = false;
+            BtnUpdateBooking.BackColor = Color.FromArgb(30, 129, 176);
+            BtnUpdateBooking.BackgroundColor = Color.FromArgb(30, 129, 176);
+            BtnUpdateBooking.BorderColor = Color.PaleVioletRed;
+            BtnUpdateBooking.BorderRadius = 10;
+            BtnUpdateBooking.BorderSize = 0;
+            BtnUpdateBooking.FlatAppearance.BorderSize = 0;
+            BtnUpdateBooking.FlatStyle = FlatStyle.Flat;
+            BtnUpdateBooking.ForeColor = Color.White;
+            BtnUpdateBooking.Image = (Image)resources.GetObject("BtnUpdateBooking.Image");
+            BtnUpdateBooking.ImageAlign = ContentAlignment.MiddleRight;
+            BtnUpdateBooking.Location = new Point(377, 2);
+            BtnUpdateBooking.Name = "BtnUpdateBooking";
+            BtnUpdateBooking.Size = new Size(366, 47);
+            BtnUpdateBooking.TabIndex = 6;
+            BtnUpdateBooking.Text = "Update/Cancel Booking";
+            BtnUpdateBooking.TextColor = Color.White;
+            BtnUpdateBooking.UseVisualStyleBackColor = false;
+            BtnUpdateBooking.Click += BtnUpdateBooking_Click;
+            BtnUpdateBooking.MouseHover += BtnUpdateBooking_MouseHover;
             // 
-            // customBtn2
+            // BtnCancelBooking
             // 
-            customBtn2.BackColor = Color.MediumSlateBlue;
-            customBtn2.BackgroundColor = Color.MediumSlateBlue;
-            customBtn2.BorderColor = Color.PaleVioletRed;
-            customBtn2.BorderRadius = 0;
-            customBtn2.BorderSize = 0;
-            customBtn2.FlatAppearance.BorderSize = 0;
-            customBtn2.FlatStyle = FlatStyle.Flat;
-            customBtn2.ForeColor = Color.White;
-            customBtn2.Location = new Point(774, 3);
-            customBtn2.Name = "customBtn2";
-            customBtn2.Size = new Size(350, 47);
-            customBtn2.TabIndex = 5;
-            customBtn2.Text = "Cancel Booking";
-            customBtn2.TextColor = Color.White;
-            customBtn2.UseVisualStyleBackColor = false;
+            BtnCancelBooking.BackColor = Color.FromArgb(30, 129, 176);
+            BtnCancelBooking.BackgroundColor = Color.FromArgb(30, 129, 176);
+            BtnCancelBooking.BorderColor = Color.PaleVioletRed;
+            BtnCancelBooking.BorderRadius = 10;
+            BtnCancelBooking.BorderSize = 0;
+            BtnCancelBooking.FlatAppearance.BorderSize = 0;
+            BtnCancelBooking.FlatStyle = FlatStyle.Flat;
+            BtnCancelBooking.ForeColor = Color.White;
+            BtnCancelBooking.Location = new Point(749, 2);
+            BtnCancelBooking.Name = "BtnCancelBooking";
+            BtnCancelBooking.Size = new Size(366, 47);
+            BtnCancelBooking.TabIndex = 5;
+            BtnCancelBooking.Text = "Cancel Booking";
+            BtnCancelBooking.TextColor = Color.White;
+            BtnCancelBooking.UseVisualStyleBackColor = false;
+            BtnCancelBooking.Click += BtnCancelBooking_Click;
             // 
-            // customBtn1
+            // BtnAddBooking
             // 
-            customBtn1.BackColor = Color.MediumSlateBlue;
-            customBtn1.BackgroundColor = Color.MediumSlateBlue;
-            customBtn1.BorderColor = Color.PaleVioletRed;
-            customBtn1.BorderRadius = 0;
-            customBtn1.BorderSize = 0;
-            customBtn1.FlatAppearance.BorderSize = 0;
-            customBtn1.FlatStyle = FlatStyle.Flat;
-            customBtn1.ForeColor = Color.White;
-            customBtn1.Location = new Point(67, 3);
-            customBtn1.Name = "customBtn1";
-            customBtn1.Size = new Size(346, 47);
-            customBtn1.TabIndex = 4;
-            customBtn1.Text = "ADD Booking";
-            customBtn1.TextColor = Color.White;
-            customBtn1.UseVisualStyleBackColor = false;
+            BtnAddBooking.BackColor = Color.FromArgb(30, 129, 176);
+            BtnAddBooking.BackgroundColor = Color.FromArgb(30, 129, 176);
+            BtnAddBooking.BorderColor = Color.PaleVioletRed;
+            BtnAddBooking.BorderRadius = 10;
+            BtnAddBooking.BorderSize = 0;
+            BtnAddBooking.FlatAppearance.BorderSize = 0;
+            BtnAddBooking.FlatStyle = FlatStyle.Flat;
+            BtnAddBooking.ForeColor = Color.White;
+            BtnAddBooking.Image = (Image)resources.GetObject("BtnAddBooking.Image");
+            BtnAddBooking.ImageAlign = ContentAlignment.MiddleRight;
+            BtnAddBooking.Location = new Point(9, 2);
+            BtnAddBooking.Name = "BtnAddBooking";
+            BtnAddBooking.Size = new Size(362, 47);
+            BtnAddBooking.TabIndex = 4;
+            BtnAddBooking.Text = "Add Booking";
+            BtnAddBooking.TextColor = Color.White;
+            BtnAddBooking.UseVisualStyleBackColor = false;
+            BtnAddBooking.Click += BtnAddBooking_Click;
             // 
             // GoBackbtn
             // 
             GoBackbtn.Anchor = AnchorStyles.None;
-            GoBackbtn.BackColor = Color.MediumSlateBlue;
-            GoBackbtn.BackgroundColor = Color.MediumSlateBlue;
+            GoBackbtn.BackColor = Color.FromArgb(30, 129, 176);
+            GoBackbtn.BackgroundColor = Color.FromArgb(30, 129, 176);
             GoBackbtn.BorderColor = Color.PaleVioletRed;
-            GoBackbtn.BorderRadius = 0;
+            GoBackbtn.BorderRadius = 10;
             GoBackbtn.BorderSize = 0;
             GoBackbtn.FlatAppearance.BorderSize = 0;
             GoBackbtn.FlatStyle = FlatStyle.Flat;
@@ -159,6 +167,7 @@ namespace Bus_Sphere.CustomForm
             dataGridView1.Name = "dataGridView1";
             dataGridView1.Size = new Size(1197, 755);
             dataGridView1.TabIndex = 0;
+            dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             dataGridView1.CellDoubleClick += dataGridView1_CellDoubleClick;
             // 
             // BusList
@@ -182,8 +191,8 @@ namespace Bus_Sphere.CustomForm
         private DataGridView dataGridView1;
         private CustomBtn GoBackbtn;
         private Panel panel3;
-        private CustomBtn customBtn3;
-        private CustomBtn customBtn2;
-        private CustomBtn customBtn1;
+        private CustomBtn BtnUpdateBooking;
+        private CustomBtn BtnCancelBooking;
+        private CustomBtn BtnAddBooking;
     }
 }

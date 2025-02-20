@@ -71,5 +71,21 @@ namespace Bus_Sphere.packages
         {
 
         }
+
+        private void MenuPanel_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void customBtn8_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BtnMgmtSaff_Click(object sender, EventArgs e)
+        {
+            MangeStaffForm mangeStaffForm = new MangeStaffForm();
+            LoadUserControl(mangeStaffForm);
+        }
     }
 }
