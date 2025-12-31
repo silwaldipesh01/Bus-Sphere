@@ -7,17 +7,8 @@ using System.Windows.Forms;
 using System.Drawing;
 using Bus_Sphere.Models;
 using Bus_Sphere.CustomControls;
-
-
-using System.Net.Mail;
+using Bus_Sphere.Services;
 using System.Threading.Tasks;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
-using System.IO;
-using System.Net;
-using Rectangle = iTextSharp.text.Rectangle;
-using Font = iTextSharp.text.Font;
-using static iTextSharp.text.TabStop;
 
 namespace Bus_Sphere.CustomForm
 {
@@ -25,6 +16,9 @@ namespace Bus_Sphere.CustomForm
     {
         private readonly string connectionString =
             "server=localhost;user=root;database=bussphere;port=3306;password=";
+
+        private readonly EmailService _emailService;
+        private readonly PdfService _pdfService;
 
         public string BusId { get; set; }
         private List<Seat> seats = new List<Seat>();
@@ -34,6 +28,8 @@ namespace Bus_Sphere.CustomForm
         {
             InitializeComponent();
             BusId = busId;
+            _emailService = new EmailService();
+            _pdfService = new PdfService();
             LoadSeatData();
             LoadRoutingData();
         }
@@ -520,29 +516,12 @@ namespace Bus_Sphere.CustomForm
         {
 
         }
-        static async Task SendEmailAsync(PassengerDetail passengerDetail)
+        async Task SendEmailAsync(PassengerDetail passengerDetail)
         {
-            MailMessage mail = new MailMessage();
-            mail.From = new MailAddress("esp32alertdipesh@gmail.com");
-            mail.To.Add(passengerDetail.Email);
-            mail.Subject = "Ticket Confirmation for " + passengerDetail.Name;
-            mail.Body = "Dear " + passengerDetail.Name + ",\n\nPlease find attached your ticket.\n\nBest regards,\nBus Sphere";
-
-            string ticketPath = CreateTicket(passengerDetail);
-            Attachment attachment = new Attachment(ticketPath);
-            mail.Attachments.Add(attachment);
-
             try
             {
-                SmtpClient smtpClient = new SmtpClient();
-                smtpClient.Host = "smtp.gmail.com";
-                smtpClient.Port = 587;
-                smtpClient.UseDefaultCredentials = false;
-                smtpClient.Credentials = new NetworkCredential("esp32alertdipesh@gmail.com", "nouv lwqe ohkg menh");
-                smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
-                smtpClient.EnableSsl = true;
-                await smtpClient.SendMailAsync(mail);
-                
+                string ticketPath = _pdfService.CreateTicket(passengerDetail);
+                await _emailService.SendTicketEmailAsync(passengerDetail, ticketPath);
             }
             catch (Exception ex)
             {
@@ -550,123 +529,6 @@ namespace Bus_Sphere.CustomForm
             }
         }
 
-        static string CreateTicket(PassengerDetail passengerDetail)
-        {
-            string outputPath = $"C:\\Users\\silwa\\source\\repos\\Bus Sphere\\TicketStorage\\ticket_{passengerDetail.Id + passengerDetail.Name} .pdf";
-
-            Document doc = new Document();
-            PdfWriter writer = PdfWriter.GetInstance(doc, new FileStream(outputPath, FileMode.Create));
-            writer.PageEvent = new PdfPageEvents();
-
-            try
-            {
-                doc.Open();
-                doc.Add(new Paragraph("\n\n\n\n\n\n"));
-
-                Font titleFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 20);
-                Font regularFont = FontFactory.GetFont(FontFactory.HELVETICA, 12);
-
-                doc.Add(new Paragraph("Bus Sphere Ticket", titleFont) { Alignment = Element.ALIGN_CENTER });
-                doc.Add(new Paragraph(" "));
-
-                PdfPTable table = new PdfPTable(2);
-                table.WidthPercentage = 100;
-                table.HorizontalAlignment = Element.ALIGN_CENTER;
-                table.SetWidths(new float[] { 1, 2 });
-
-                table.AddCell(new PdfPCell(new Phrase("Passenger Name:", regularFont)) { Border = Rectangle.NO_BORDER });
-                table.AddCell(new PdfPCell(new Phrase(passengerDetail.Name, regularFont)) { Border = Rectangle.NO_BORDER });
-
-                table.AddCell(new PdfPCell(new Phrase("Passenger Email:", regularFont)) { Border = Rectangle.NO_BORDER });
-                table.AddCell(new PdfPCell(new Phrase(passengerDetail.Email, regularFont)) { Border = Rectangle.NO_BORDER });
-
-                table.AddCell(new PdfPCell(new Phrase("Phone Number:", regularFont)) { Border = Rectangle.NO_BORDER });
-                table.AddCell(new PdfPCell(new Phrase(passengerDetail.PhoneNumber, regularFont)) { Border = Rectangle.NO_BORDER });
-
-                table.AddCell(new PdfPCell(new Phrase("Address:", regularFont)) { Border = Rectangle.NO_BORDER });
-                table.AddCell(new PdfPCell(new Phrase(passengerDetail.Address, regularFont)) { Border = Rectangle.NO_BORDER });
-
-                table.AddCell(new PdfPCell(new Phrase("Bus Number:", regularFont)) { Border = Rectangle.NO_BORDER });
-                table.AddCell(new PdfPCell(new Phrase(passengerDetail.BusNo, regularFont)) { Border = Rectangle.NO_BORDER });
-
-                table.AddCell(new PdfPCell(new Phrase("Bus Name:", regularFont)) { Border = Rectangle.NO_BORDER });
-                table.AddCell(new PdfPCell(new Phrase(passengerDetail.BusName, regularFont)) { Border = Rectangle.NO_BORDER });
-
-                table.AddCell(new PdfPCell(new Phrase("Bus Type:", regularFont)) { Border = Rectangle.NO_BORDER });
-                table.AddCell(new PdfPCell(new Phrase(passengerDetail.BusType, regularFont)) { Border = Rectangle.NO_BORDER });
-
-                table.AddCell(new PdfPCell(new Phrase("No of Seats", regularFont)) { Border = Rectangle.NO_BORDER });
-                table.AddCell(new PdfPCell(new Phrase(passengerDetail.Seats.Length.ToString(), regularFont)) { Border = Rectangle.NO_BORDER });
-
-                table.AddCell(new PdfPCell(new Phrase("Seat Numbers:", regularFont)) { Border = Rectangle.NO_BORDER });
-                table.AddCell(new PdfPCell(new Phrase(string.Join(", ", passengerDetail.Seats), regularFont)) { Border = Rectangle.NO_BORDER });
-
-                table.AddCell(new PdfPCell(new Phrase("Departure Date:", regularFont)) { Border = Rectangle.NO_BORDER });
-                table.AddCell(new PdfPCell(new Phrase(passengerDetail.Date, regularFont)) { Border = Rectangle.NO_BORDER });
-
-                table.AddCell(new PdfPCell(new Phrase("Departure Time:", regularFont)) { Border = Rectangle.NO_BORDER });
-                table.AddCell(new PdfPCell(new Phrase(passengerDetail.DepartureTime, regularFont)) { Border = Rectangle.NO_BORDER });
-
-                table.AddCell(new PdfPCell(new Phrase("Departure Location:", regularFont)) { Border = Rectangle.NO_BORDER });
-                table.AddCell(new PdfPCell(new Phrase(passengerDetail.Source, regularFont)) { Border = Rectangle.NO_BORDER });
-
-                table.AddCell(new PdfPCell(new Phrase("Arrival Time:", regularFont)) { Border = Rectangle.NO_BORDER });
-                table.AddCell(new PdfPCell(new Phrase(passengerDetail.ArrivalTime, regularFont)) { Border = Rectangle.NO_BORDER });
-
-                table.AddCell(new PdfPCell(new Phrase("Arrival Location:", regularFont)) { Border = Rectangle.NO_BORDER });
-                table.AddCell(new PdfPCell(new Phrase(passengerDetail.Destination, regularFont)) { Border = Rectangle.NO_BORDER });
-
-                table.AddCell(new PdfPCell(new Phrase("Ticket Price:", regularFont)) { Border = Rectangle.NO_BORDER });
-                string ticketPrice = Convert.ToInt32( passengerDetail.TicketPrice).ToString();
-                table.AddCell(new PdfPCell(new Phrase("Rs : " + ticketPrice, regularFont)) { Border = Rectangle.NO_BORDER });
-
-                table.AddCell(new PdfPCell(new Phrase("Total Price : ", regularFont)) { Border = Rectangle.NO_BORDER });
-                string total = (Convert.ToInt32(  passengerDetail.TicketPrice * passengerDetail.Seats.Length)).ToString();
-                table.AddCell(new PdfPCell(new Phrase("Rs : " + total, regularFont)) { Border = Rectangle.NO_BORDER });
-
-
-               
-
-               
-                doc.Add(table); 
-                doc.Add(new Paragraph("\n\n"));
-                doc.Add(new Paragraph("Thank you for choosing Bus Sphere. We wish you a pleasant journey!", regularFont) { Alignment = Element.ALIGN_CENTER });
-
-                doc.Close();
-               // MessageBox.Show("PDF created successfully at " + outputPath);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error  creating ticket: " + ex);
-            }
-
-            return outputPath;
-        }
-
-        public class PdfPageEvents : PdfPageEventHelper
-        {
-            public override void OnEndPage(PdfWriter writer, Document document)
-            {
-                PdfPTable headerTable = new PdfPTable(1);
-                headerTable.TotalWidth = document.PageSize.Width - document.LeftMargin - document.RightMargin;
-
-                headerTable.HorizontalAlignment = Element.ALIGN_CENTER;
-                string imagePath = "C:\\Users\\silwa\\source\\repos\\Bus Sphere\\Images\\BusLogoNewest_enhanced.png";
-                iTextSharp.text.Image image = iTextSharp.text.Image.GetInstance(imagePath);
-                image.ScaleToFit(474f, 87f);
-                PdfPCell imageCell = new PdfPCell(image);
-                imageCell.Border = Rectangle.NO_BORDER;
-                imageCell.HorizontalAlignment = Element.ALIGN_CENTER;
-                headerTable.AddCell(imageCell);
-
-                Font font = FontFactory.GetFont(FontFactory.HELVETICA, 44, BaseColor.BLACK);
-                PdfPCell headerCell = new PdfPCell(new Phrase("Bus Sphere", font));
-                headerCell.Border = Rectangle.NO_BORDER;
-                headerCell.HorizontalAlignment = Element.ALIGN_CENTER;
-                headerTable.WriteSelectedRows(0, -1, document.LeftMargin, document.PageSize.Height - 15, writer.DirectContent);
-            }
-        }
-       
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {

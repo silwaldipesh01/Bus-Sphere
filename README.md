@@ -1,4 +1,56 @@
-thse arre the data base designs used in this application
+# Bus Sphere
+
+A comprehensive bus ticket booking and management system built with C# and Windows Forms.
+
+## Features
+
+- **Bus Management**: Add, update, and manage bus information
+- **Route Management**: Define routes with departure/arrival times and pricing
+- **Seat Booking**: Interactive seat selection and booking system
+- **Passenger Management**: Track passenger information and booking history
+- **Email Notifications**: Automated ticket confirmation emails
+- **PDF Ticket Generation**: Professional PDF tickets with branding
+- **User Authentication**: Secure login system with role-based access
+
+## New Services
+
+### EmailService
+A reusable service for sending emails with attachments. Located in `Services/EmailService.cs`.
+
+**Features:**
+- Send ticket confirmation emails with PDF attachments
+- Generic email sending with optional attachments
+- SMTP configuration support
+- Async/await support
+
+**Basic Usage:**
+```csharp
+var emailService = new EmailService();
+await emailService.SendTicketEmailAsync(passengerDetail, ticketPath);
+```
+
+See [Services/README.md](Services/README.md) for detailed documentation.
+
+### PdfService
+A reusable service for generating PDF documents, specifically bus tickets. Located in `Services/PdfService.cs`.
+
+**Features:**
+- Generate formatted bus tickets as PDF documents
+- Customizable logo and branding
+- Professional table-based layout
+- Support for custom PDF generation
+
+**Basic Usage:**
+```csharp
+var pdfService = new PdfService();
+string ticketPath = pdfService.CreateTicket(passengerDetail);
+```
+
+See [Services/README.md](Services/README.md) for detailed documentation and examples.
+
+## Database Schema
+
+These are the database designs used in this application
 
 
 ```csharp name=Program.cs
@@ -220,3 +272,75 @@ The following tables are defined in the `CreateDatabaseAndTables` method:
    - `Username VARCHAR(255) UNIQUE NOT NULL`
    - `PasswordHash VARCHAR(255) NOT NULL`
    - `Role ENUM('Admin', 'User') NOT NULL`
+
+## Dependencies
+
+The project requires the following NuGet packages:
+
+- **BCrypt.Net-Next** (4.0.3) - Password hashing
+- **iTextSharp** (5.5.13.4) - PDF generation
+- **MySql.Data** (9.2.0) - MySQL database connectivity
+- **Newtonsoft.Json** (13.0.3) - JSON serialization
+- **PDFsharp-MigraDoc** (6.1.1) - Additional PDF utilities
+- **System.Text.Json** (9.0.2) - JSON processing
+
+## Setup
+
+1. **Prerequisites:**
+   - .NET 8.0 SDK or later
+   - Visual Studio 2022 or later
+   - XAMPP (for MySQL database)
+   - Windows operating system
+
+2. **Database Setup:**
+   - Install and start XAMPP
+   - The application will automatically create the database and tables on first run
+   - Default connection: `localhost:3306`, database: `bussphere`, user: `root`, no password
+
+3. **Email Configuration:**
+   - Update SMTP credentials in `Services/EmailService.cs` or pass them to the constructor
+   - For Gmail, you need to:
+     - Enable 2-factor authentication
+     - Generate an App Password
+     - Use the App Password in the EmailService
+
+4. **Build and Run:**
+   ```bash
+   dotnet restore
+   dotnet build
+   dotnet run
+   ```
+
+## Project Structure
+
+```
+Bus-Sphere/
+├── CustomControls/       # Custom UI controls
+├── CustomForm/           # Form controls (Seat Layout, Bus List, etc.)
+├── Models/               # Data models (PassengerDetail, Seat)
+├── Services/             # Business logic services
+│   ├── EmailService.cs   # Email sending functionality
+│   ├── PdfService.cs     # PDF generation functionality
+│   ├── README.md         # Services documentation
+│   └── ServiceUsageExamples.cs  # Usage examples
+├── Images/               # Application images and logos
+├── TicketStorage/        # Generated PDF tickets (auto-created)
+└── Properties/           # Application properties
+
+```
+
+## Usage Examples
+
+See [Services/ServiceUsageExamples.cs](Services/ServiceUsageExamples.cs) for comprehensive examples of using the EmailService and PdfService.
+
+## Contributing
+
+When contributing to this project:
+1. Follow the existing code style and conventions
+2. Update documentation for any new features
+3. Test thoroughly before submitting changes
+4. Use the existing services for email and PDF functionality
+
+## License
+
+This project is part of a learning exercise for bus booking system development.
