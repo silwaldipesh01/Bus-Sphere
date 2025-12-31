@@ -84,7 +84,7 @@ namespace Bus_Sphere.Services
                 AddTableRow(table, "Bus Type:", passengerDetail.BusType, regularFont);
 
                 // Add seat details
-                AddTableRow(table, "No of Seats", passengerDetail.Seats.Length.ToString(), regularFont);
+                AddTableRow(table, "No of Seats", passengerDetail.noOfSeats.ToString(), regularFont);
                 AddTableRow(table, "Seat Numbers:", string.Join(", ", passengerDetail.Seats), regularFont);
 
                 // Add journey details
@@ -98,7 +98,7 @@ namespace Bus_Sphere.Services
                 string ticketPrice = Convert.ToInt32(passengerDetail.TicketPrice).ToString();
                 AddTableRow(table, "Ticket Price:", "Rs : " + ticketPrice, regularFont);
 
-                string total = (Convert.ToInt32(passengerDetail.TicketPrice * passengerDetail.Seats.Length)).ToString();
+                string total = (Convert.ToInt32(passengerDetail.TicketPrice * passengerDetail.noOfSeats)).ToString();
                 AddTableRow(table, "Total Price : ", "Rs : " + total, regularFont);
 
                 doc.Add(table);
@@ -193,14 +193,10 @@ namespace Bus_Sphere.Services
                     }
                     catch
                     {
-                        // If logo fails to load, just add the text header
+                        // If logo fails to load, skip logo in header
                     }
                 }
 
-                Font font = FontFactory.GetFont(FontFactory.HELVETICA, 44, BaseColor.BLACK);
-                PdfPCell headerCell = new PdfPCell(new Phrase("Bus Sphere", font));
-                headerCell.Border = Rectangle.NO_BORDER;
-                headerCell.HorizontalAlignment = Element.ALIGN_CENTER;
                 headerTable.WriteSelectedRows(0, -1, document.LeftMargin, document.PageSize.Height - 15, writer.DirectContent);
             }
         }

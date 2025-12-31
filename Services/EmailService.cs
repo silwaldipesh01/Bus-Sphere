@@ -20,11 +20,16 @@ namespace Bus_Sphere.Services
 
         /// <summary>
         /// Initializes a new instance of the EmailService
+        /// WARNING: Default credentials are for demonstration purposes only.
+        /// In production, credentials should be loaded from:
+        /// - Environment variables
+        /// - Configuration files (not in source control)
+        /// - Azure Key Vault or similar secret management systems
         /// </summary>
         /// <param name="smtpHost">SMTP server host (default: smtp.gmail.com)</param>
         /// <param name="smtpPort">SMTP server port (default: 587)</param>
         /// <param name="senderEmail">Sender email address</param>
-        /// <param name="senderPassword">Sender email password</param>
+        /// <param name="senderPassword">Sender email password or app-specific password</param>
         public EmailService(
             string smtpHost = "smtp.gmail.com",
             int smtpPort = 587,
